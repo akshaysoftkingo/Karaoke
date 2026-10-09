@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, ChevronDown, RefreshCw, Bell } from 'lucide-react';
-import { mockNotificationsList } from '../../data/mockNotifications';
+import { useApp } from '../../context/AppContext';
 import { StatusBadge } from '../common/StatusBadge';
 import { ActionMenu } from '../common/ActionMenu';
 import { Pagination } from '../common/Pagination';
@@ -15,15 +15,25 @@ const notificationIcons = [
 ];
 
 export const NotificationsTable = () => {
+  const {
+    notifications,
+    deleteNotification,
+    duplicateNotification,
+    setNotificationBeingEdited,
+    setActiveModal,
+    confirmDelete,
+  } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
   const [typeFilter, setTypeFilter] = useState('All Types');
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedNotification, setSelectedNotification] = useState(null);
   const pageSize = 10;
 
   // Filter Notifications
   const filteredNotifications = useMemo(() => {
-    const result = mockNotificationsList.filter((item) => {
+    const list = notifications || [];
+    const result = list.filter((item) => {
       const matchSearch =
         item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -39,7 +49,7 @@ export const NotificationsTable = () => {
     });
 
     return result;
-  }, [searchTerm, statusFilter, typeFilter]);
+  }, [notifications, searchTerm, statusFilter, typeFilter]);
 
   const totalPages = Math.ceil(filteredNotifications.length / pageSize) || 1;
   const paginatedNotifications = filteredNotifications.slice(
@@ -203,6 +213,20 @@ export const NotificationsTable = () => {
                     {/* Actions */}
                     <td className="py-3 px-3 text-right pr-0">
                       <ActionMenu
+                        onSelect={(action) => {
+                          if (action === 'del') {
+                            confirmDelete(`Delete "${item.title}"? This action cannot be undone.`, () =>
+                              deleteNotification(item.id)
+                            );
+                          } else if (action === 'duplicate') {
+                            duplicateNotification(item);
+                          } else if (action === 'view') {
+                            setSelectedNotification(item);
+                          } else if (action === 'edit') {
+                            setNotificationBeingEdited(item);
+                            setActiveModal('create-notification');
+                          }
+                        }}
                         items={[
                           { id: 'view', label: 'View Details' },
                           { id: 'edit', label: 'Edit Notification' },
@@ -228,6 +252,48 @@ export const NotificationsTable = () => {
         itemLabel="notifications"
         onPageChange={(p) => setCurrentPage(p)}
       />
+
+      {selectedNotification && (
+        <div className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">
+                  {selectedNotification.title}
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">
+                  {selectedNotification.description}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedNotification(null)}
+                className="text-xs font-semibold text-slate-400 hover:text-slate-700"
+              >
+                Close
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-3 mt-5 text-xs">
+              <div>
+                <span className="text-slate-400 block">Type</span>
+                <span className="font-semibold text-slate-700">{selectedNotification.type}</span>
+              </div>
+              <div>
+                <span className="text-slate-400 block">Audience</span>
+                <span className="font-semibold text-slate-700">{selectedNotification.audience}</span>
+              </div>
+              <div>
+                <span className="text-slate-400 block">Date</span>
+                <span className="font-semibold text-slate-700">{selectedNotification.date}</span>
+              </div>
+              <div>
+                <span className="text-slate-400 block">Status</span>
+                <span className="font-semibold text-slate-700">{selectedNotification.status}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

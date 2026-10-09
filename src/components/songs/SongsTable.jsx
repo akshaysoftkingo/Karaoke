@@ -8,17 +8,19 @@ import { Pagination } from '../common/Pagination';
 import { useApp } from '../../context/AppContext';
 
 export const SongsTable = () => {
-  const { setActiveModal } = useApp();
+  const { setActiveModal, confirmDelete } = useApp();
+  const [songs, setSongs] = useState(mockSongsList);
   const [searchTerm, setSearchTerm] = useState('');
   const [providerFilter, setProviderFilter] = useState('All Providers');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
   const [languageFilter, setLanguageFilter] = useState('All Languages');
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedSong, setSelectedSong] = useState(null);
   const pageSize = 10;
 
   // Filter songs
   const filteredSongs = useMemo(() => {
-    return mockSongsList.filter((song) => {
+    return songs.filter((song) => {
       const matchSearch =
         song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         song.artist.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -38,7 +40,21 @@ export const SongsTable = () => {
 
       return matchSearch && matchProvider && matchStatus && matchLanguage;
     });
-  }, [searchTerm, providerFilter, statusFilter, languageFilter]);
+  }, [songs, searchTerm, providerFilter, statusFilter, languageFilter]);
+
+  const handleSongAction = (action, song) => {
+    if (action === 'del') {
+      confirmDelete(`Remove "${song.title}" from the catalogue? This action cannot be undone.`, () =>
+        setSongs((prev) => prev.filter((item) => item.id !== song.id))
+      );
+    } else if (action === 'lyrics' || action === 'preview') {
+      setSelectedSong(song);
+    } else if (action === 're-sync') {
+      setSongs((prev) =>
+        prev.map((item) => (item.id === song.id ? { ...item, status: 'Ready' } : item))
+      );
+    }
+  };
 
   const totalPages = Math.ceil(filteredSongs.length / pageSize) || 1;
   const paginatedSongs = filteredSongs.slice(
@@ -221,6 +237,7 @@ export const SongsTable = () => {
                   {/* Actions */}
                   <td className="py-3 px-3 text-right pr-0">
                     <ActionMenu
+                      onSelect={(action) => handleSongAction(action, song)}
                       items={[
                         { id: 'lyrics', label: 'View Lyrics & Cues' },
                         { id: 're-sync', label: 'Re-sync Stems' },
@@ -245,6 +262,18 @@ export const SongsTable = () => {
         itemLabel="songs"
         onPageChange={(p) => setCurrentPage(p)}
       />
+
+      {selectedSong && (
+        <div className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div><h3 className="text-sm font-bold text-slate-900">{selectedSong.title}</h3><p className="text-xs text-slate-500 mt-1">{selectedSong.artist}</p></div>
+              <button type="button" onClick={() => setSelectedSong(null)} className="text-xs font-semibold text-slate-400 hover:text-slate-700">Close</button>
+            </div>
+            <p className="text-xs text-slate-600 mt-5">{selectedSong.lyrics || 'Lyrics and karaoke cues are ready for this track.'}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

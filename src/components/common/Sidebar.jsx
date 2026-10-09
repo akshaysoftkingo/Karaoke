@@ -9,9 +9,8 @@ import {
   Target,
   Award,
   FolderClosed,
-  FileText,
   Bell,
-  BarChart3,
+  LineChart,
   Settings,
 } from 'lucide-react';
 
@@ -38,9 +37,8 @@ export const Sidebar = ({ onNavigate }) => {
     {
       group: 'MANAGEMENT',
       items: [
-        { id: 'reports', label: 'Reports', icon: FileText },
+        { id: 'reports', label: 'Reports & Analytics', icon: LineChart },
         { id: 'notifications', label: 'Notifications', icon: Bell },
-        { id: 'analytics', label: 'Analytics', icon: BarChart3 },
       ],
     },
     {
@@ -54,14 +52,12 @@ export const Sidebar = ({ onNavigate }) => {
   return (
     <aside className="w-64 min-w-[256px] bg-white border-r border-slate-200/80 min-h-screen flex flex-col select-none">
       {/* Brand Header */}
-      <div className="p-6 pb-5 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-[#ff2b75] flex items-center justify-center shadow-sm shadow-pink-500/20 text-white font-extrabold text-lg">
-          V
-        </div>
-        <div className="flex items-center tracking-tight">
-          <span className="font-extrabold text-slate-900 text-lg">VOX</span>
-          <span className="font-extrabold text-[#ff2b75] text-lg ml-1.5">KARAOKE</span>
-        </div>
+      <div className="p-6 pb-5 flex items-center">
+        <img
+          src="/softkingo-logo.png"
+          alt="Softkingo"
+          className="h-8 w-auto max-w-[180px] object-contain"
+        />
       </div>
 
       {/* Navigation Sections */}

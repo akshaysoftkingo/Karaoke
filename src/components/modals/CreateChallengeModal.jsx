@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Trophy, CheckCircle2 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export const CreateChallengeModal = () => {
-  const { activeModal, setActiveModal } = useApp();
+  const {
+    activeModal,
+    setActiveModal,
+    addChallenge,
+    updateChallenge,
+    challengeBeingEdited,
+    setChallengeBeingEdited,
+  } = useApp();
   const [creating, setCreating] = useState(false);
   const [created, setCreated] = useState(false);
   const [form, setForm] = useState({
@@ -15,6 +22,19 @@ export const CreateChallengeModal = () => {
     target: '',
   });
 
+  useEffect(() => {
+    if (activeModal === 'create-challenge' && challengeBeingEdited) {
+      setForm({
+        name: challengeBeingEdited.name || '',
+        description: challengeBeingEdited.description || '',
+        type: challengeBeingEdited.type || 'Song Completion',
+        startDate: challengeBeingEdited.startDate || '2026-10-17',
+        endDate: challengeBeingEdited.endDate || '2026-10-20',
+        target: String(challengeBeingEdited.target || ''),
+      });
+    }
+  }, [activeModal, challengeBeingEdited]);
+
   if (activeModal !== 'create-challenge') {
     return null;
   }
@@ -24,13 +44,39 @@ export const CreateChallengeModal = () => {
   };
 
   const handleCreate = () => {
+    if (!form.name.trim()) return;
+
     setCreating(true);
     setTimeout(() => {
       setCreating(false);
       setCreated(true);
+
+      if (challengeBeingEdited) {
+        updateChallenge(challengeBeingEdited.id, {
+          name: form.name.trim(),
+          type: form.type,
+          startDate: form.startDate,
+          endDate: form.endDate,
+          target: Number(form.target) || 5,
+        });
+      } else if (addChallenge) {
+        addChallenge({
+          id: `challenge-${Date.now()}`,
+          name: form.name.trim(),
+          description: form.description.trim() || 'Karaoke vocal milestone',
+          type: form.type,
+          startDate: form.startDate,
+          endDate: form.endDate,
+          target: Number(form.target) || 5,
+          participants: 1,
+          status: 'Active',
+        });
+      }
+
       setTimeout(() => {
         setCreated(false);
         setActiveModal(null);
+        setChallengeBeingEdited(null);
         setForm({
           name: '',
           description: '',
@@ -39,8 +85,21 @@ export const CreateChallengeModal = () => {
           endDate: '2026-10-20',
           target: '',
         });
-      }, 1200);
-    }, 1500);
+      }, 800);
+    }, 600);
+  };
+
+  const closeModal = () => {
+    setActiveModal(null);
+    setChallengeBeingEdited(null);
+    setForm({
+      name: '',
+      description: '',
+      type: 'Song Completion',
+      startDate: '2026-10-17',
+      endDate: '2026-10-20',
+      target: '',
+    });
   };
 
   const inputClass =
@@ -56,7 +115,7 @@ export const CreateChallengeModal = () => {
             <Trophy className="w-4 h-4 text-[#ff2b75]" />
             <div>
               <h3 className="font-bold text-slate-900 text-sm">
-                Create Challenge
+                {challengeBeingEdited ? 'Save Changes' : 'Create Challenge'}
               </h3>
               <p className="text-[11px] text-slate-400">
                 Set up a new karaoke challenge
@@ -64,7 +123,7 @@ export const CreateChallengeModal = () => {
             </div>
           </div>
           <button
-            onClick={() => setActiveModal(null)}
+            onClick={closeModal}
             className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition"
           >
             <X className="w-4 h-4" />
@@ -84,17 +143,18 @@ export const CreateChallengeModal = () => {
             />
           </div>
 
-          {/* Description */}
-          <div>
-            <label className={labelClass}>Description</label>
-            <textarea
-              value={form.description}
-              onChange={handleChange('description')}
-              placeholder="Describe the challenge rules, criteria, and rewards."
-              rows={3}
-              className={`${inputClass} resize-none`}
-            />
-          </div>
+          {!challengeBeingEdited && (
+            <div>
+              <label className={labelClass}>Description</label>
+              <textarea
+                value={form.description}
+                onChange={handleChange('description')}
+                placeholder="Describe the challenge rules, criteria, and rewards."
+                rows={3}
+                className={`${inputClass} resize-none`}
+              />
+            </div>
+          )}
 
           {/* Challenge Type */}
           <div>
@@ -152,7 +212,7 @@ export const CreateChallengeModal = () => {
 
         <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
           <button
-            onClick={() => setActiveModal(null)}
+            onClick={closeModal}
             className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 cursor-pointer"
           >
             Cancel

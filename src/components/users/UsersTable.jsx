@@ -7,7 +7,8 @@ import { Pagination } from '../common/Pagination';
 import { useApp } from '../../context/AppContext';
 
 export const UsersTable = () => {
-  const { setSelectedUser } = useApp();
+  const { setSelectedUser, confirmDelete } = useApp();
+  const [users, setUsers] = useState(mockUsersList);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
   const [accountFilter, setAccountFilter] = useState('All Accounts');
@@ -16,7 +17,7 @@ export const UsersTable = () => {
 
   // Filtered users
   const filteredUsers = useMemo(() => {
-    return mockUsersList.filter((user) => {
+    return users.filter((user) => {
       const matchSearch =
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -32,7 +33,17 @@ export const UsersTable = () => {
 
       return matchSearch && matchStatus && matchAccount;
     });
-  }, [searchTerm, statusFilter, accountFilter]);
+  }, [users, searchTerm, statusFilter, accountFilter]);
+
+  const handleUserAction = (action, user) => {
+    if (action === 'view') {
+      setSelectedUser(user);
+    } else if (action === 'delete') {
+      confirmDelete(`Remove ${user.name}? This action cannot be undone.`, () =>
+        setUsers((prev) => prev.filter((item) => item.id !== user.id))
+      );
+    }
+  };
 
   const totalPages = Math.ceil(filteredUsers.length / pageSize) || 1;
   const paginatedUsers = filteredUsers.slice(
@@ -168,11 +179,11 @@ export const UsersTable = () => {
                   {/* Actions */}
                   <td className="py-3.5 px-3 text-right pr-0">
                     <ActionMenu
-                      onSelect={(action) => {
-                        if (action === 'view') {
-                          setSelectedUser(user);
-                        }
-                      }}
+                      onSelect={(action) => handleUserAction(action, user)}
+                      items={[
+                        { id: 'view', label: 'View Details' },
+                        { id: 'delete', label: 'Remove User', danger: true },
+                      ]}
                     />
                   </td>
                 </tr>

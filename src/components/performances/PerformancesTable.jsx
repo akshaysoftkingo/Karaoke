@@ -4,18 +4,23 @@ import { mockPerformancesList } from '../../data/mockPerformances';
 import { StatusBadge } from '../common/StatusBadge';
 import { ActionMenu } from '../common/ActionMenu';
 import { Pagination } from '../common/Pagination';
+import { useApp } from '../../context/AppContext';
 
 export const PerformancesTable = () => {
+  const { confirmDelete } = useApp();
+  const [performances, setPerformances] = useState(mockPerformancesList);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
   const [dateFilter, setDateFilter] = useState('All Dates');
   const [sortOrder, setSortOrder] = useState('Newest First');
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedPerformance, setSelectedPerformance] = useState(null);
+  const [performanceDraft, setPerformanceDraft] = useState(null);
   const pageSize = 10;
 
   // Filter & Sort Performances
   const filteredPerformances = useMemo(() => {
-    let result = mockPerformancesList.filter((item) => {
+    let result = performances.filter((item) => {
       const matchSearch =
         item.song.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -41,7 +46,18 @@ export const PerformancesTable = () => {
     }
 
     return result;
-  }, [searchTerm, statusFilter, dateFilter, sortOrder]);
+  }, [performances, searchTerm, statusFilter, dateFilter, sortOrder]);
+
+  const handlePerformanceAction = (action, performance) => {
+    if (action === 'delete' || action === 'del') {
+      confirmDelete(`Delete the performance for "${performance.song}"? This action cannot be undone.`, () =>
+        setPerformances((prev) => prev.filter((item) => item.id !== performance.id))
+      );
+    } else if (action === 'edit') {
+      setSelectedPerformance(performance);
+      setPerformanceDraft({ ...performance });
+    }
+  };
 
   const totalPages = Math.ceil(filteredPerformances.length / pageSize) || 1;
   const paginatedPerformances = filteredPerformances.slice(
@@ -220,10 +236,9 @@ export const PerformancesTable = () => {
                   {/* Actions */}
                   <td className="py-3 px-3 text-right pr-0">
                     <ActionMenu
+                      onSelect={(action) => handlePerformanceAction(action, item)}
                       items={[
-                        { id: 'recording', label: 'Listen to Recording' },
-                        { id: 'pitch', label: 'View Pitch Analysis' },
-                        { id: 'review', label: 'Mark for Review' },
+                        { id: 'edit', label: 'Edit Performance' },
                         { id: 'del', label: 'Delete Session', danger: true },
                       ]}
                     />
@@ -244,6 +259,35 @@ export const PerformancesTable = () => {
         itemLabel="performances"
         onPageChange={(p) => setCurrentPage(p)}
       />
+
+      {selectedPerformance && performanceDraft && (
+        <div className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden">
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">Edit Performance</h3>
+                <p className="text-[11px] text-slate-400 mt-1">Update the performance record.</p>
+              </div>
+              <button type="button" onClick={() => { setSelectedPerformance(null); setPerformanceDraft(null); }} className="text-xs font-semibold text-slate-400 hover:text-slate-700">Close</button>
+            </div>
+            <div className="p-6 space-y-4">
+            <div className="flex items-start justify-between gap-4">
+              <div><h3 className="text-sm font-bold text-slate-900">{selectedPerformance.song}</h3><p className="text-xs text-slate-500 mt-1">{selectedPerformance.user}</p></div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 mt-5 text-xs">
+              <label className="text-slate-400">Score<input type="number" min="0" max="100" value={performanceDraft.score} onChange={(e) => setPerformanceDraft((prev) => ({ ...prev, score: Number(e.target.value) }))} className="mt-1 w-full border border-slate-200 rounded-lg px-2 py-1.5 text-slate-700" /></label>
+              <label className="text-slate-400">Status<select value={performanceDraft.status} onChange={(e) => setPerformanceDraft((prev) => ({ ...prev, status: e.target.value }))} className="mt-1 w-full border border-slate-200 rounded-lg px-2 py-1.5 text-slate-700"><option>Completed</option><option>Under Review</option><option>Reported</option></select></label>
+              <div><span className="text-slate-400 block">Duration</span><span className="font-semibold text-slate-700">{performanceDraft.duration}</span></div>
+              <div><span className="text-slate-400 block">Date</span><span className="font-semibold text-slate-700">{performanceDraft.date}</span></div>
+            </div>
+            </div>
+            <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-2">
+              <button type="button" onClick={() => { setSelectedPerformance(null); setPerformanceDraft(null); }} className="px-4 py-2 text-xs font-semibold text-slate-600">Cancel</button>
+              <button type="button" onClick={() => { setPerformances((prev) => prev.map((item) => item.id === performanceDraft.id ? performanceDraft : item)); setSelectedPerformance(null); setPerformanceDraft(null); }} className="px-4 py-2 rounded-xl bg-[#ff2b75] text-white text-xs font-bold">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

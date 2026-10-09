@@ -34,14 +34,7 @@ export const DashboardPage = () => {
                 <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
                   Good morning, Admin
                 </h1>
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-pink-50 text-[#ff2b75] border border-pink-100">
-                  <ShieldCheck className="w-3 h-3" />
-                  Admin
-                </span>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Here is what's happening on VOX Karaoke today.
-              </p>
             </div>
           </div>
         </div>

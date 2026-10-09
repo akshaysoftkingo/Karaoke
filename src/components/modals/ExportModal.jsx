@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { X, Download, FileSpreadsheet, CheckCircle2 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import { downloadUsersExcel, downloadExcelReport } from '../../utils/exportExcel';
+import { mockUsersList } from '../../data/mockUsers';
+import { mockPerformancesList } from '../../data/mockPerformances';
 
 export const ExportModal = () => {
   const { activeModal, setActiveModal } = useApp();
@@ -18,13 +21,18 @@ export const ExportModal = () => {
   const handleExport = () => {
     setDownloading(true);
     setTimeout(() => {
+      if (isUsers) {
+        downloadUsersExcel(mockUsersList);
+      } else {
+        downloadExcelReport(mockPerformancesList);
+      }
       setDownloading(false);
       setDownloaded(true);
       setTimeout(() => {
         setDownloaded(false);
         setActiveModal(null);
-      }, 1200);
-    }, 1000);
+      }, 1000);
+    }, 600);
   };
 
   return (

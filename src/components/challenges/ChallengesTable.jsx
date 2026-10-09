@@ -8,7 +8,7 @@ import {
   Flame,
   Users,
 } from 'lucide-react';
-import { mockChallengesList } from '../../data/mockChallenges';
+import { useApp } from '../../context/AppContext';
 import { StatusBadge } from '../common/StatusBadge';
 import { ActionMenu } from '../common/ActionMenu';
 import { Pagination } from '../common/Pagination';
@@ -23,6 +23,13 @@ const challengeIcons = [
 ];
 
 export const ChallengesTable = () => {
+  const {
+    challenges,
+    setChallenges,
+    setChallengeBeingEdited,
+    setActiveModal,
+    confirmDelete,
+  } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
   const [typeFilter, setTypeFilter] = useState('All Types');
@@ -31,7 +38,8 @@ export const ChallengesTable = () => {
 
   // Filter Challenges
   const filteredChallenges = useMemo(() => {
-    const result = mockChallengesList.filter((item) => {
+    const list = challenges || [];
+    const result = list.filter((item) => {
       const matchSearch = item.name
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
@@ -47,7 +55,11 @@ export const ChallengesTable = () => {
     });
 
     return result;
-  }, [searchTerm, statusFilter, typeFilter]);
+  }, [challenges, searchTerm, statusFilter, typeFilter]);
+
+  const deleteChallenge = (id) => {
+    setChallenges((prev) => prev.filter((challenge) => challenge.id !== id));
+  };
 
   const totalPages = Math.ceil(filteredChallenges.length / pageSize) || 1;
   const paginatedChallenges = filteredChallenges.slice(
@@ -196,9 +208,17 @@ export const ChallengesTable = () => {
                     {/* Actions */}
                     <td className="py-3 px-3 text-right pr-0">
                       <ActionMenu
+                        onSelect={(action) => {
+                          if (action === 'edit') {
+                            setChallengeBeingEdited(item);
+                            setActiveModal('create-challenge');
+                          } else if (action === 'del') {
+                            confirmDelete(`Delete "${item.name}"? This action cannot be undone.`, () =>
+                              deleteChallenge(item.id)
+                            );
+                          }
+                        }}
                         items={[
-                          { id: 'view', label: 'View Details' },
-                          { id: 'participants', label: 'View Participants' },
                           { id: 'edit', label: 'Edit Challenge' },
                           { id: 'del', label: 'Delete', danger: true },
                         ]}
@@ -221,6 +241,7 @@ export const ChallengesTable = () => {
         itemLabel="challenges"
         onPageChange={(p) => setCurrentPage(p)}
       />
+
     </div>
   );
 };

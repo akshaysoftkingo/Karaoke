@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
+import { useApp } from './context/AppContext';
 import { Sidebar } from './components/common/Sidebar';
 import { Header } from './components/common/Header';
+import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { UsersPage } from './pages/UsersPage';
 import { SongsPage } from './pages/SongsPage';
@@ -10,12 +12,17 @@ import { PerformancesPage } from './pages/PerformancesPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
 import { ChallengesPage } from './pages/ChallengesPage';
 import { NotificationsPage } from './pages/NotificationsPage';
-import { PlaceholderPage } from './pages/PlaceholderPage';
+import { AchievementsPage } from './pages/AchievementsPage';
+import { ContentPage } from './pages/ContentPage';
+import { ReportsAnalyticsPage } from './pages/ReportsAnalyticsPage';
+import { SettingsPage } from './pages/SettingsPage';
 import { SyncCatalogueModal } from './components/modals/SyncCatalogueModal';
 import { ProviderSettingsModal } from './components/modals/ProviderSettingsModal';
 import { UserDetailsModal } from './components/users/UserDetailsModal';
 import { CreateChallengeModal } from './components/modals/CreateChallengeModal';
 import { CreateNotificationModal } from './components/modals/CreateNotificationModal';
+import { ExportModal } from './components/modals/ExportModal';
+import { ConfirmDeleteModal } from './components/common/ConfirmDeleteModal';
 import { Menu, X } from 'lucide-react';
 
 const MainLayout = () => {
@@ -57,12 +64,12 @@ const MainLayout = () => {
           >
             <Menu className="w-5 h-5" />
           </button>
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#ff2b75] flex items-center justify-center text-white font-extrabold text-sm">
-              V
-            </div>
-            <span className="font-extrabold text-slate-900 text-sm">VOX</span>
-            <span className="font-extrabold text-[#ff2b75] text-sm">KARAOKE</span>
+          <div className="flex items-center">
+            <img
+              src="/softkingo-logo.png"
+              alt="Softkingo"
+              className="h-6 w-auto max-w-[130px] object-contain"
+            />
           </div>
           <div className="w-5" />
         </div>
@@ -81,66 +88,11 @@ const MainLayout = () => {
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/challenges" element={<ChallengesPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
-            <Route
-              path="/achievements"
-              element={
-                <PlaceholderPage
-                  title="Achievements"
-                  category="ENGAGEMENT"
-                  description="Badges, high note milestones, and rewards system for singers."
-                />
-              }
-            />
-            <Route
-              path="/content"
-              element={
-                <PlaceholderPage
-                  title="Content Management"
-                  category="ENGAGEMENT"
-                  description="Playlists, featured collections, banner promotions, and curated vocal playlists."
-                />
-              }
-            />
-            <Route
-              path="/reports"
-              element={
-                <PlaceholderPage
-                  title="Reports"
-                  category="MANAGEMENT"
-                  description="Automated royalty distribution, copyright reports, and daily platform health logs."
-                />
-              }
-            />
-            <Route
-              path="/notifications"
-              element={
-                <PlaceholderPage
-                  title="Notifications"
-                  category="MANAGEMENT"
-                  description="Push notifications, campaign broadcasts, and system event alerts."
-                />
-              }
-            />
-            <Route
-              path="/analytics"
-              element={
-                <PlaceholderPage
-                  title="Analytics"
-                  category="MANAGEMENT"
-                  description="Deep vocal telemetry, user retention curves, and streaming provider load analysis."
-                />
-              }
-            />
-            <Route
-              path="/settings"
-              element={
-                <PlaceholderPage
-                  title="Settings"
-                  category="SYSTEM"
-                  description="Platform configuration, streaming API credentials, and administrative roles."
-                />
-              }
-            />
+            <Route path="/achievements" element={<AchievementsPage />} />
+            <Route path="/content" element={<ContentPage />} />
+            <Route path="/reports" element={<ReportsAnalyticsPage />} />
+            <Route path="/analytics" element={<ReportsAnalyticsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </main>
@@ -152,15 +104,30 @@ const MainLayout = () => {
       <UserDetailsModal />
       <CreateChallengeModal />
       <CreateNotificationModal />
+      <ExportModal />
+      <ConfirmDeleteModal />
     </div>
   );
+};
+
+const AuthenticatedApp = () => {
+  const { isAuthenticated } = useApp();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <MainLayout />;
 };
 
 export default function App() {
   return (
     <AppProvider>
       <BrowserRouter>
-        <MainLayout />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/*" element={<AuthenticatedApp />} />
+        </Routes>
       </BrowserRouter>
     </AppProvider>
   );

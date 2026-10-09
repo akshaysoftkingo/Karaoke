@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Bell, Send, Clock, CheckCircle2 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export const CreateNotificationModal = () => {
-  const { activeModal, setActiveModal } = useApp();
+  const {
+    activeModal,
+    setActiveModal,
+    addNotification,
+    updateNotification,
+    notificationBeingEdited,
+    setNotificationBeingEdited,
+  } = useApp();
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({
@@ -16,22 +23,65 @@ export const CreateNotificationModal = () => {
     time: '10:00',
   });
 
+  useEffect(() => {
+    if (activeModal === 'create-notification' && notificationBeingEdited) {
+      setForm({
+        title: notificationBeingEdited.title || '',
+        message: notificationBeingEdited.description || '',
+        type: notificationBeingEdited.type || 'Content Update',
+        audience: notificationBeingEdited.audience || 'All Users',
+        delivery: notificationBeingEdited.status === 'Scheduled' ? 'schedule' : 'send-now',
+        date: '2026-10-12',
+        time: '10:00',
+      });
+    }
+  }, [activeModal, notificationBeingEdited]);
+
   if (activeModal !== 'create-notification') {
     return null;
   }
+
+  const closeModal = () => {
+    setActiveModal(null);
+    setNotificationBeingEdited(null);
+  };
 
   const handleChange = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
   const handleSend = () => {
+    if (!form.title.trim()) return;
+
     setSending(true);
     setTimeout(() => {
       setSending(false);
       setSent(true);
+
+      if (notificationBeingEdited) {
+        updateNotification(notificationBeingEdited.id, {
+          title: form.title.trim(),
+          description: form.message.trim() || 'New announcement broadcast',
+          type: form.type,
+          audience: form.audience,
+          status: form.delivery === 'send-now' ? 'Sent' : 'Scheduled',
+        });
+      } else if (addNotification) {
+        addNotification({
+          id: `notification-${Date.now()}`,
+          title: form.title.trim(),
+          description: form.message.trim() || 'New announcement broadcast',
+          type: form.type,
+          audience: form.audience,
+          date: 'Just now',
+          status: form.delivery === 'send-now' ? 'Sent' : 'Scheduled',
+        });
+      }
+
       setTimeout(() => {
         setSent(false);
         setActiveModal(null);
+        setNotificationBeingEdited(null);
         setForm({
           title: '',
           message: '',
@@ -41,8 +91,8 @@ export const CreateNotificationModal = () => {
           date: '2026-10-12',
           time: '10:00',
         });
-      }, 1200);
-    }, 1500);
+      }, 800);
+    }, 600);
   };
 
   const inputClass =
@@ -71,7 +121,7 @@ export const CreateNotificationModal = () => {
             </div>
           </div>
           <button
-            onClick={() => setActiveModal(null)}
+            onClick={closeModal}
             className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition"
           >
             <X className="w-4 h-4" />
@@ -184,7 +234,7 @@ export const CreateNotificationModal = () => {
 
         <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
           <button
-            onClick={() => setActiveModal(null)}
+            onClick={closeModal}
             className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 cursor-pointer"
           >
             Cancel
