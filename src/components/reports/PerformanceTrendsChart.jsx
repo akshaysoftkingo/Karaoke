@@ -28,9 +28,8 @@ export const PerformanceTrendsChart = ({ trends, periodLabel = 'Last 30 Days' })
               Completed karaoke performances over time
             </p>
           </div>
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#ff2b75]" />
-            <span>{periodLabel}</span>
+          <div className="bg-pink-50 border border-pink-200 rounded-full px-3 py-1 text-[11px] font-bold text-[#ff2b75]">
+            {periodLabel}
           </div>
         </div>
 

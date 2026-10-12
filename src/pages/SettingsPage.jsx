@@ -15,9 +15,43 @@ import {
   Smartphone,
   KeyRound,
   Check,
+  ChevronDown,
   Music,
+  Send,
+  Plus,
+  Trophy,
+  Star,
+  Calendar,
+  X,
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+
+const staticNotifications = [
+  {
+    id: 'tpl-1',
+    icon: Music,
+    title: 'New Song Alert',
+    desc: 'New trending songs have been added to the catalogue.',
+  },
+  {
+    id: 'tpl-2',
+    icon: Trophy,
+    title: 'Weekly Challenge',
+    desc: 'A new karaoke challenge is now live. Join now!',
+  },
+  {
+    id: 'tpl-3',
+    icon: Star,
+    title: 'Score Milestone',
+    desc: 'You crossed 1,000 leaderboard points this week!',
+  },
+  {
+    id: 'tpl-4',
+    icon: Calendar,
+    title: 'Weekend Karaoke',
+    desc: 'Weekend karaoke event starts Friday at 8 PM.',
+  },
+];
 
 export const SettingsPage = () => {
   const { setActiveModal } = useApp();
@@ -80,6 +114,22 @@ export const SettingsPage = () => {
 
   const toggleNotifPref = (key) => {
     setNotifPrefs((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  // Push Notifications state
+  const [pushTarget, setPushTarget] = useState('all');
+  const [customCount, setCustomCount] = useState('1000');
+  const [pushSent, setPushSent] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState('tpl-1');
+  const [showPushModal, setShowPushModal] = useState(false);
+
+  const handleSendPush = () => {
+    if (!selectedTemplate) return;
+    setPushSent(true);
+    setTimeout(() => {
+      setPushSent(false);
+      setShowPushModal(false);
+    }, 800);
   };
 
   const handleSaveProfile = () => {
@@ -167,7 +217,7 @@ export const SettingsPage = () => {
       </div>
 
       {/* Main 2-Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* LEFT COLUMN: Admin Profile & Security */}
         <div className="space-y-6">
           {/* Admin Profile Card */}
@@ -455,7 +505,7 @@ export const SettingsPage = () => {
                 Add an extra layer of security to your admin account via Authenticator App (TOTP).
               </p>
 
-              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/60">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
                 <div className="flex items-center gap-2.5">
                   <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
                     <Smartphone className="w-3.5 h-3.5" />
@@ -477,9 +527,9 @@ export const SettingsPage = () => {
         </div>
 
         {/* RIGHT COLUMN: Music Providers & Notification Preferences */}
-        <div className="space-y-6">
+        <div className="space-y-4 flex flex-col">
           {/* Music Providers Card */}
-          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs space-y-5">
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-pink-50 text-[#ff2b75] flex items-center justify-center">
@@ -509,7 +559,7 @@ export const SettingsPage = () => {
               {providers.map((prov) => (
                 <div
                   key={prov.id}
-                  className="p-4 rounded-xl border border-slate-200/70 hover:border-slate-300 transition-all flex items-center justify-between gap-3 bg-white"
+                  className="p-3 rounded-xl border border-slate-200/70 hover:border-slate-300 transition-all flex items-center justify-between gap-3 bg-white"
                 >
                   <div className="flex items-center gap-3.5">
                     {/* Provider Brand Icon */}
@@ -563,7 +613,7 @@ export const SettingsPage = () => {
           </div>
 
           {/* Notification Preferences Card */}
-          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs space-y-5">
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs space-y-4 flex-1">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-xl bg-pink-50 text-[#ff2b75] flex items-center justify-center">
                 <Bell className="w-4 h-4" />
@@ -576,9 +626,9 @@ export const SettingsPage = () => {
               Choose which updates and alerts you receive as an administrator.
             </p>
 
-            <div className="space-y-4 pt-1">
+            <div className="space-y-3 pt-1">
               {/* Security Alerts */}
-              <div className="flex items-start justify-between gap-4 p-3 rounded-xl border border-slate-100 hover:bg-slate-50/50 transition">
+              <div className="flex items-start justify-between gap-4 p-2.5 rounded-xl border border-slate-100 hover:bg-slate-50/50 transition">
                 <div className="flex items-start gap-3">
                   <div className="w-7 h-7 rounded-lg bg-pink-50 text-[#ff2b75] flex items-center justify-center shrink-0 mt-0.5">
                     <Shield className="w-3.5 h-3.5" />
@@ -608,7 +658,7 @@ export const SettingsPage = () => {
               </div>
 
               {/* Platform Updates */}
-              <div className="flex items-start justify-between gap-4 p-3 rounded-xl border border-slate-100 hover:bg-slate-50/50 transition">
+              <div className="flex items-start justify-between gap-4 p-2.5 rounded-xl border border-slate-100 hover:bg-slate-50/50 transition">
                 <div className="flex items-start gap-3">
                   <div className="w-7 h-7 rounded-lg bg-pink-50 text-[#ff2b75] flex items-center justify-center shrink-0 mt-0.5">
                     <Radio className="w-3.5 h-3.5" />
@@ -638,7 +688,7 @@ export const SettingsPage = () => {
               </div>
 
               {/* Scheduled Notification Reminders */}
-              <div className="flex items-start justify-between gap-4 p-3 rounded-xl border border-slate-100 hover:bg-slate-50/50 transition">
+              <div className="flex items-start justify-between gap-4 p-2.5 rounded-xl border border-slate-100 hover:bg-slate-50/50 transition">
                 <div className="flex items-start gap-3">
                   <div className="w-7 h-7 rounded-lg bg-pink-50 text-[#ff2b75] flex items-center justify-center shrink-0 mt-0.5">
                     <Clock className="w-3.5 h-3.5" />
@@ -668,8 +718,176 @@ export const SettingsPage = () => {
               </div>
             </div>
           </div>
+
+          {/* Push Notifications Card */}
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs space-y-4 flex-1">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-pink-50 text-[#ff2b75] flex items-center justify-center">
+                  <Send className="w-4 h-4" />
+                </div>
+                <h2 className="text-base font-bold text-slate-900">
+                  Push Notifications
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPushModal(true);
+                  setPushSent(false);
+                }}
+                className="bg-[#ff2b75] hover:bg-[#e61d65] active:scale-98 text-white text-xs font-bold py-2 px-3.5 rounded-xl shadow-sm shadow-pink-500/20 flex items-center gap-1.5 transition cursor-pointer shrink-0"
+              >
+                <Plus className="w-3.5 h-3.5 stroke-3" />
+                <span>Create Notification</span>
+              </button>
+            </div>
+            <p className="text-xs text-slate-500 -mt-2">
+              Receive real-time push updates on your registered devices.
+            </p>
+
+            {/* Static Notifications */}
+            <div className="border-t border-slate-100 pt-3 space-y-1.5">
+              <h3 className="text-xs font-bold text-slate-900">
+                 Notifications
+              </h3>
+              {staticNotifications.map((tpl) => {
+                const TplIcon = tpl.icon;
+                return (
+                  <div
+                    key={tpl.id}
+                    className="flex items-start gap-3 p-2.5 rounded-xl border border-slate-100"
+                  >
+                    <div className="w-7 h-7 rounded-lg bg-pink-50 text-[#ff2b75] flex items-center justify-center shrink-0 mt-0.5">
+                      <TplIcon className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-900">
+                        {tpl.title}
+                      </h4>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        {tpl.desc}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Create Notification Modal */}
+      {showPushModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Send className="w-4 h-4 text-[#ff2b75]" />
+                <div>
+                  <h3 className="font-bold text-slate-900 text-sm">
+                    Create Notification
+                  </h3>
+                  <p className="text-[11px] text-slate-400">
+                    Select a template and choose your audience
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPushModal(false)}
+                className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-5">
+              {/* Select Notification */}
+              <div>
+                <label className="text-[11px] font-bold tracking-wider text-slate-500 uppercase block mb-2">
+                  Select Notification
+                </label>
+                <div className="relative">
+                  <select
+                    value={selectedTemplate}
+                    onChange={(e) => setSelectedTemplate(e.target.value)}
+                    className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 pr-10 text-xs font-semibold text-slate-800 focus:border-[#ff2b75] focus:outline-none cursor-pointer"
+                  >
+                    {staticNotifications.map((tpl) => (
+                      <option key={tpl.id} value={tpl.id}>
+                        {tpl.title}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                </div>
+              </div>
+
+              {/* Send Push Notification To */}
+              <div>
+                <label className="text-[11px] font-bold tracking-wider text-slate-500 uppercase block mb-2">
+                  Send Push Notification To
+                </label>
+                <div className="relative">
+                  <select
+                    value={pushTarget}
+                    onChange={(e) => setPushTarget(e.target.value)}
+                    className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 pr-10 text-xs font-semibold text-slate-800 focus:border-[#ff2b75] focus:outline-none cursor-pointer"
+                  >
+                    <option value="all">All Users</option>
+                    <option value="old">Old Users</option>
+                    <option value="custom">Specific Users</option>
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                </div>
+                {pushTarget === 'custom' && (
+                  <div className="mt-2.5 flex items-center gap-2">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={customCount}
+                      onChange={(e) =>
+                        setCustomCount(e.target.value.replace(/[^0-9]/g, ''))
+                      }
+                      className="w-24 px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-800 focus:border-[#ff2b75] focus:outline-none"
+                    />
+                    <span className="text-[11px] font-medium text-slate-500">
+                      users
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowPushModal(false)}
+                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={!selectedTemplate}
+                onClick={handleSendPush}
+                className="px-4 py-2 bg-[#ff2b75] hover:bg-[#e61d65] text-white text-xs font-semibold rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {pushSent ? (
+                  <>
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Sent!
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-3.5 h-3.5" /> Send Notification
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

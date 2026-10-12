@@ -7,6 +7,7 @@ import { Header } from './components/common/Header';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { UsersPage } from './pages/UsersPage';
+import { UserDetailPage } from './pages/UserDetailPage';
 import { SongsPage } from './pages/SongsPage';
 import { PerformancesPage } from './pages/PerformancesPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
@@ -83,6 +84,7 @@ const MainLayout = () => {
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/users" element={<UsersPage />} />
+            <Route path="/users/:userId" element={<UserDetailPage />} />
             <Route path="/songs" element={<SongsPage />} />
             <Route path="/performances" element={<PerformancesPage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />

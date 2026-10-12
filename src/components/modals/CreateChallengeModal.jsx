@@ -200,21 +200,6 @@ export const CreateChallengeModal = () => {
             </div>
           </div>
 
-          {/* Participants */}
-          <div>
-            <label className={labelClass}>Participants</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              value={form.participants}
-              onChange={handleChange('participants')}
-              placeholder="e.g. 100"
-              className={inputClass}
-            />
-            <p className="text-[10px] text-slate-400 mt-1.5">
-              Expected number of participants for this challenge.
-            </p>
-          </div>
         </div>
 
         <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">

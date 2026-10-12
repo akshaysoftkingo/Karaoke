@@ -50,13 +50,13 @@ export const Sidebar = ({ onNavigate }) => {
   ];
 
   return (
-    <aside className="w-64 min-w-[256px] bg-white border-r border-slate-200/80 h-full flex flex-col overflow-y-auto select-none">
+    <aside className="w-64 min-w-[256px] bg-white border-r border-slate-200/80 h-full flex flex-col select-none">
       {/* Brand Header */}
-      <div className="p-6 pb-5 flex items-center">
+      <div className="p-6 pb-5 flex items-center justify-center">
         <img
           src="/softkingo-logo.png"
           alt="Softkingo"
-          className="h-8 w-auto max-w-[180px] object-contain"
+          className="h-12 w-auto max-w-[180px] object-contain"
         />
       </div>
 

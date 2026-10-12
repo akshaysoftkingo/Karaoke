@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Check, Plus, Bell, Radio } from 'lucide-react';
+import { Check, Bell, Radio } from 'lucide-react';
 import { AlertsList } from '../components/notifications/AlertsList';
 import { NotificationsTable } from '../components/notifications/NotificationsTable';
 import { useApp } from '../context/AppContext';
 
 export const NotificationsPage = () => {
-  const { setActiveModal, markAllAlertsAsRead } = useApp();
+  const { markAllAlertsAsRead } = useApp();
   const [viewMode, setViewMode] = useState('alerts'); // 'alerts' or 'broadcasts'
 
   return (
@@ -29,15 +29,6 @@ export const NotificationsPage = () => {
           >
             <Check className="w-4 h-4 stroke-3" />
             <span>Mark all as read</span>
-          </button>
-
-          {/* Create Notification Button */}
-          <button
-            onClick={() => setActiveModal('create-notification')}
-            className="bg-[#ff2b75] hover:bg-[#e61d65] active:scale-98 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm shadow-pink-500/20 flex items-center gap-2 transition cursor-pointer"
-          >
-            <Plus className="w-3.5 h-3.5 stroke-3" />
-            <span>Create Notification</span>
           </button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, ChevronDown } from 'lucide-react';
 import { mockUsersList } from '../../data/mockUsers';
 import { StatusBadge } from '../common/StatusBadge';
@@ -7,7 +8,8 @@ import { Pagination } from '../common/Pagination';
 import { useApp } from '../../context/AppContext';
 
 export const UsersTable = () => {
-  const { setSelectedUser, confirmDelete } = useApp();
+  const { confirmDelete } = useApp();
+  const navigate = useNavigate();
   const [users, setUsers] = useState(mockUsersList);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
@@ -36,7 +38,7 @@ export const UsersTable = () => {
 
   const handleUserAction = (action, user) => {
     if (action === 'view') {
-      setSelectedUser(user);
+      navigate(`/users/${user.userId.replace('#', '')}`);
     } else if (action === 'delete') {
       confirmDelete(`Remove ${user.name}? This action cannot be undone.`, () =>
         setUsers((prev) => prev.filter((item) => item.id !== user.id))
@@ -83,7 +85,6 @@ export const UsersTable = () => {
             >
               <option>All Statuses</option>
               <option>Active</option>
-              <option>Suspended</option>
               <option>Inactive</option>
             </select>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />

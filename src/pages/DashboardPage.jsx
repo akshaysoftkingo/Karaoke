@@ -51,7 +51,7 @@ export const DashboardPage = () => {
         </div>
 
         {/* Right Column (Span 1) */}
-        <div className="space-y-6">
+        <div className="space-y-6 flex flex-col">
           <PerformanceSummary />
           <LeaderboardCard />
           <RecentActivityCard />

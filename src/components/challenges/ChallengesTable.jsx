@@ -26,8 +26,6 @@ export const ChallengesTable = () => {
   const {
     challenges,
     setChallenges,
-    setChallengeBeingEdited,
-    setActiveModal,
     confirmDelete,
   } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
@@ -208,10 +206,6 @@ export const ChallengesTable = () => {
                     {/* Actions */}
                     <td className="py-3 px-3 text-right pr-0">
                       <RowActions
-                        onView={() => {
-                          setChallengeBeingEdited(item);
-                          setActiveModal('create-challenge');
-                        }}
                         onDelete={() =>
                           confirmDelete(
                             `Delete "${item.name}"? This action cannot be undone.`,

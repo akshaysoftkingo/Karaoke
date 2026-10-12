@@ -7,7 +7,7 @@ export const LeaderboardCard = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white border border-slate-200/70 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+    <div className="bg-white border border-slate-200/70 rounded-2xl p-5 shadow-sm flex flex-col justify-between flex-1">
       <div>
         {/* Header */}
         <div className="flex items-start justify-between pb-3 border-b border-slate-100">
@@ -23,11 +23,11 @@ export const LeaderboardCard = () => {
         </div>
 
         {/* Singer Rows */}
-        <div className="mt-3 divide-y divide-slate-100/70">
+        <div className="mt-4 divide-y divide-slate-100/70">
           {leaderboardSnapshot.map((user) => (
             <div
               key={user.rank}
-              className="py-2.5 flex items-center justify-between text-xs"
+              className="py-4 flex items-center justify-between text-xs"
             >
               <div className="flex items-center gap-3">
                 <span className="text-[11px] font-bold text-slate-400 w-4">

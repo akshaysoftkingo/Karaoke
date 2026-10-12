@@ -19,7 +19,7 @@ export const RecentActivityCard = () => {
   };
 
   return (
-    <div className="bg-white border border-slate-200/70 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+    <div className="bg-white border border-slate-200/70 rounded-2xl p-5 shadow-sm flex flex-col justify-between flex-1">
       <div>
         {/* Header */}
         <div className="flex items-start justify-between pb-3 border-b border-slate-100">
