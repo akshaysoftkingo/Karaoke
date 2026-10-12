@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles } from 'lucide-react';
 
-export const UserActivityChart = ({ activity, peakText, weekendLift }) => {
+export const UserActivityChart = ({ activity, peakText, weekendLift, periodLabel = 'Last 30 Days' }) => {
   const [hoveredBar, setHoveredBar] = useState(null);
 
   if (!activity) return null;
@@ -14,11 +14,11 @@ export const UserActivityChart = ({ activity, peakText, weekendLift }) => {
           <div>
             <h3 className="font-bold text-slate-900 text-sm">User Activity</h3>
             <p className="text-[11px] text-slate-500 mt-0.5">
-              Daily active singers and participants
+              {periodLabel} active singers and participants
             </p>
           </div>
           <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-pink-50 text-[#ff2b75] border border-pink-100">
-            Weekly
+            {periodLabel}
           </span>
         </div>
 

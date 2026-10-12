@@ -39,15 +39,15 @@ export const RecentPerformancesTable = () => {
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
+        <table className="w-full text-left text-xs table-fixed">
           <thead>
             <tr className="text-[11px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-100">
-              <th className="py-3 px-3 pl-0">USER</th>
-              <th className="py-3 px-3">SONG / ARTIST</th>
-              <th className="py-3 px-3 text-center">SCORE</th>
-              <th className="py-3 px-3">XP</th>
-              <th className="py-3 px-3">DATE</th>
-              <th className="py-3 px-3 text-right pr-0">STATUS</th>
+              <th className="py-3 px-3 pl-0 w-[16.67%]">USER</th>
+              <th className="py-3 px-3 w-[16.67%]">SONG / ARTIST</th>
+              <th className="py-3 px-3 text-center w-[16.67%]">SCORE</th>
+              <th className="py-3 px-3 w-[16.67%]">XP</th>
+              <th className="py-3 px-3 w-[16.67%]">DATE</th>
+              <th className="py-3 px-3 text-right pr-0 w-[16.67%]">STATUS</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100/70">

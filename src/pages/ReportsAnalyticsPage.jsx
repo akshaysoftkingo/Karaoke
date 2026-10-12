@@ -4,8 +4,7 @@ import { PerformanceTrendsChart } from '../components/reports/PerformanceTrendsC
 import { UserActivityChart } from '../components/reports/UserActivityChart';
 import { AvailableReportsTable } from '../components/reports/AvailableReportsTable';
 import { timeRangeReportData } from '../data/mockReports';
-import { mockUsersList } from '../data/mockUsers';
-import { downloadUsersExcel } from '../utils/exportExcel';
+import { downloadReportSummaryExcel } from '../utils/exportExcel';
 
 export const ReportsAnalyticsPage = () => {
   const [timeRange, setTimeRange] = useState('Last 30 Days');
@@ -32,7 +31,7 @@ export const ReportsAnalyticsPage = () => {
   const handleGlobalExport = () => {
     setIsExporting(true);
     setTimeout(() => {
-      downloadUsersExcel(mockUsersList);
+      downloadReportSummaryExcel(currentData.metrics);
       setIsExporting(false);
     }, 600);
   };
@@ -114,11 +113,15 @@ export const ReportsAnalyticsPage = () => {
 
       {/* Two Analytics Charts Grid - dynamically updates with timeRange */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <PerformanceTrendsChart trends={currentData.trends} />
+        <PerformanceTrendsChart
+          trends={currentData.trends}
+          periodLabel={timeRange}
+        />
         <UserActivityChart
           activity={currentData.activity}
           peakText={currentData.peakText}
           weekendLift={currentData.weekendLift}
+          periodLabel={timeRange}
         />
       </div>
 

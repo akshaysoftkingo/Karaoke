@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { StatusBadge } from '../common/StatusBadge';
-import { ActionMenu } from '../common/ActionMenu';
+import { RowActions } from '../common/RowActions';
 import { Pagination } from '../common/Pagination';
 
 const challengeIcons = [
@@ -128,16 +128,16 @@ export const ChallengesTable = () => {
 
       {/* Challenges Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
+        <table className="w-full text-left text-xs table-fixed">
           <thead>
             <tr className="text-[11px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-100">
-              <th className="py-3 px-3 pl-0">CHALLENGE</th>
-              <th className="py-3 px-3">TYPE</th>
-              <th className="py-3 px-3">PARTICIPANTS</th>
-              <th className="py-3 px-3">START DATE</th>
-              <th className="py-3 px-3">END DATE</th>
-              <th className="py-3 px-3">STATUS</th>
-              <th className="py-3 px-3 text-right pr-0">ACTIONS</th>
+              <th className="py-3 px-3 pl-0 w-[14.29%]">CHALLENGE</th>
+              <th className="py-3 px-3 w-[14.29%]">TYPE</th>
+              <th className="py-3 px-3 w-[14.29%]">PARTICIPANTS</th>
+              <th className="py-3 px-3 w-[14.29%]">START DATE</th>
+              <th className="py-3 px-3 w-[14.29%]">END DATE</th>
+              <th className="py-3 px-3 w-[14.29%]">STATUS</th>
+              <th className="py-3 px-3 text-right pr-0 w-[14.29%]">ACTIONS</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100/70">
@@ -207,21 +207,17 @@ export const ChallengesTable = () => {
 
                     {/* Actions */}
                     <td className="py-3 px-3 text-right pr-0">
-                      <ActionMenu
-                        onSelect={(action) => {
-                          if (action === 'edit') {
-                            setChallengeBeingEdited(item);
-                            setActiveModal('create-challenge');
-                          } else if (action === 'del') {
-                            confirmDelete(`Delete "${item.name}"? This action cannot be undone.`, () =>
-                              deleteChallenge(item.id)
-                            );
-                          }
+                      <RowActions
+                        onView={() => {
+                          setChallengeBeingEdited(item);
+                          setActiveModal('create-challenge');
                         }}
-                        items={[
-                          { id: 'edit', label: 'Edit Challenge' },
-                          { id: 'del', label: 'Delete', danger: true },
-                        ]}
+                        onDelete={() =>
+                          confirmDelete(
+                            `Delete "${item.name}"? This action cannot be undone.`,
+                            () => deleteChallenge(item.id)
+                          )
+                        }
                       />
                     </td>
                   </tr>

@@ -152,12 +152,12 @@ const triggerDownload = (content, filename, mimeType = 'application/vnd.ms-excel
 export const downloadUsersExcel = (users) => {
   const columns = [
     { header: 'User ID', width: 130, align: 'center' },
-    { header: 'Full Name', width: 200, align: 'left' },
-    { header: 'Email Address', width: 260, align: 'left' },
+    { header: 'User Name', width: 200, align: 'left' },
+    { header: 'Email', width: 240, align: 'left' },
     { header: 'Songs Sung', width: 120, align: 'center' },
     { header: 'Joined Date', width: 140, align: 'center' },
+    { header: 'Tier', width: 120, align: 'center' },
     { header: 'Status', width: 120, align: 'center' },
-    { header: 'Account Tier', width: 130, align: 'center' },
   ];
 
   const rows = users.map((u) => [
@@ -166,8 +166,8 @@ export const downloadUsersExcel = (users) => {
     u.email,
     Number(u.songsSung),
     u.joinedDate,
+    u.tier,
     u.status,
-    u.accountType,
   ]);
 
   const xml = createExcelXml({
@@ -182,10 +182,10 @@ export const downloadUsersExcel = (users) => {
 // 2. Export ONLY Songs Data
 export const downloadSongsExcel = (songs) => {
   const columns = [
-    { header: 'Track Code', width: 130, align: 'center' },
-    { header: 'Song Title', width: 220, align: 'left' },
-    { header: 'Artist', width: 260, align: 'left' },
-    { header: 'Streaming Provider', width: 150, align: 'center' },
+    { header: 'Song ID', width: 130, align: 'center' },
+    { header: 'Song Name', width: 220, align: 'left' },
+    { header: 'Artist Name', width: 260, align: 'left' },
+    { header: 'Provider', width: 150, align: 'center' },
     { header: 'Duration', width: 110, align: 'center' },
     { header: 'Language', width: 120, align: 'center' },
     { header: 'Karaoke Status', width: 140, align: 'center' },
@@ -210,50 +210,17 @@ export const downloadSongsExcel = (songs) => {
   triggerDownload(xml, `vox_karaoke_songs_${Date.now()}.xls`);
 };
 
-// 3. Export ONLY Performances Data
+// 3. Export ONLY Performances Data (Analytics Report)
 export const downloadExcelReport = (performances) => {
   const columns = [
-    { header: 'Performance ID', width: 140, align: 'center' },
-    { header: 'Singer Name', width: 200, align: 'left' },
-    { header: 'Song Title', width: 220, align: 'left' },
-    { header: 'Artist', width: 260, align: 'left' },
-    { header: 'Vocal Score', width: 120, align: 'center' },
-    { header: 'XP Earned', width: 120, align: 'center' },
-    { header: 'Recording Date', width: 140, align: 'center' },
-    { header: 'Status', width: 130, align: 'center' },
-  ];
-
-  const rows = performances.map((p) => [
-    p.id,
-    p.user,
-    p.song,
-    p.artist,
-    Number(p.score),
-    p.xp,
-    p.date,
-    p.status,
-  ]);
-
-  const xml = createExcelXml({
-    sheetName: 'Performances',
-    columns,
-    rows,
-  });
-
-  triggerDownload(xml, `vox_karaoke_performances_${Date.now()}.xls`);
-};
-
-// 4. Export Performances Page Data
-export const downloadPerformancesExcel = (performances) => {
-  const columns = [
-    { header: 'Performance ID', width: 140, align: 'center' },
-    { header: 'Song Title', width: 220, align: 'left' },
-    { header: 'Singer Name', width: 200, align: 'left' },
-    { header: 'Email Address', width: 260, align: 'left' },
+    { header: 'Performance ID', width: 130, align: 'center' },
+    { header: 'Performance Name', width: 220, align: 'left' },
+    { header: 'User Name', width: 180, align: 'left' },
+    { header: 'User Email', width: 240, align: 'left' },
     { header: 'Duration', width: 110, align: 'center' },
-    { header: 'Recording Date', width: 140, align: 'center' },
-    { header: 'Vocal Score', width: 120, align: 'center' },
-    { header: 'Status', width: 130, align: 'center' },
+    { header: 'Date', width: 140, align: 'center' },
+    { header: 'Score', width: 100, align: 'center' },
+    { header: 'Status', width: 120, align: 'center' },
   ];
 
   const rows = performances.map((p) => [
@@ -274,4 +241,58 @@ export const downloadPerformancesExcel = (performances) => {
   });
 
   triggerDownload(xml, `vox_karaoke_performances_${Date.now()}.xls`);
+};
+
+// 4. Export Performances Page Data
+export const downloadPerformancesExcel = (performances) => {
+  const columns = [
+    { header: 'Performance ID', width: 130, align: 'center' },
+    { header: 'Performance Name', width: 220, align: 'left' },
+    { header: 'User Name', width: 180, align: 'left' },
+    { header: 'User Email', width: 240, align: 'left' },
+    { header: 'Duration', width: 110, align: 'center' },
+    { header: 'Date', width: 140, align: 'center' },
+    { header: 'Score', width: 100, align: 'center' },
+    { header: 'Status', width: 120, align: 'center' },
+  ];
+
+  const rows = performances.map((p) => [
+    p.perfCode,
+    p.song,
+    p.user,
+    p.email,
+    p.duration,
+    p.date,
+    Number(p.score),
+    p.status,
+  ]);
+
+  const xml = createExcelXml({
+    sheetName: 'Performances',
+    columns,
+    rows,
+  });
+
+  triggerDownload(xml, `vox_karaoke_performances_${Date.now()}.xls`);
+};
+
+// 5. Export Reports Page Summary Metrics
+export const downloadReportSummaryExcel = (metrics) => {
+  const columns = [
+    { header: 'Metric', width: 240, align: 'left' },
+    { header: 'Value', width: 140, align: 'center' },
+  ];
+
+  const rows = metrics.map((m) => [
+    m.label,
+    Number(String(m.value).replace(/,/g, '')),
+  ]);
+
+  const xml = createExcelXml({
+    sheetName: 'Report Summary',
+    columns,
+    rows,
+  });
+
+  triggerDownload(xml, `vox_karaoke_report_summary_${Date.now()}.xls`);
 };

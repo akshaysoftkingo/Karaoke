@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Search,
-  MoreHorizontal,
   Mic,
   Star,
   Heart,
@@ -15,6 +14,7 @@ import {
   achievementCategories,
   achievementStatuses,
 } from '../../data/mockAchievements';
+import { RowActions } from '../common/RowActions';
 import { Pagination } from '../common/Pagination';
 import { useApp } from '../../context/AppContext';
 
@@ -24,7 +24,6 @@ export const AchievementsTable = ({ achievements, onUpdateAchievements }) => {
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedStatus, setSelectedStatus] = useState('All Statuses');
   const [currentPage, setCurrentPage] = useState(1);
-  const [actionMenuOpen, setActionMenuOpen] = useState(null);
 
   const pageSize = 6;
 
@@ -81,14 +80,12 @@ export const AchievementsTable = ({ achievements, onUpdateAchievements }) => {
         )
       );
     }
-    setActionMenuOpen(null);
   };
 
   const deleteAchievement = (id) => {
     if (onUpdateAchievements) {
       onUpdateAchievements((prev) => prev.filter((a) => a.id !== id));
     }
-    setActionMenuOpen(null);
   };
 
   return (
@@ -144,15 +141,15 @@ export const AchievementsTable = ({ achievements, onUpdateAchievements }) => {
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse table-fixed">
           <thead>
             <tr className="border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-slate-50/40">
-              <th className="py-3.5 px-6">Achievement</th>
-              <th className="py-3.5 px-6">Category</th>
-              <th className="py-3.5 px-6">Unlock Criteria</th>
-              <th className="py-3.5 px-6">Users Unlocked</th>
-              <th className="py-3.5 px-6">Status</th>
-              <th className="py-3.5 px-6 text-right">Actions</th>
+              <th className="py-3.5 px-6 w-[16.67%]">Achievement</th>
+              <th className="py-3.5 px-6 w-[16.67%]">Category</th>
+              <th className="py-3.5 px-6 w-[16.67%]">Unlock Criteria</th>
+              <th className="py-3.5 px-6 w-[16.67%]">Users Unlocked</th>
+              <th className="py-3.5 px-6 w-[16.67%]">Status</th>
+              <th className="py-3.5 px-6 text-right w-[16.67%]">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
@@ -216,38 +213,17 @@ export const AchievementsTable = ({ achievements, onUpdateAchievements }) => {
                   </td>
 
                   {/* Actions */}
-                  <td className="py-4 px-6 text-right relative">
-                    <button
-                      onClick={() =>
-                        setActionMenuOpen(actionMenuOpen === item.id ? null : item.id)
+                  <td className="py-4 px-6 text-right">
+                    <RowActions
+                      onToggle={() => toggleStatus(item.id)}
+                      toggleOn={item.status === 'Active'}
+                      onDelete={() =>
+                        confirmDelete(
+                          `Delete "${item.name}"? This action cannot be undone.`,
+                          () => deleteAchievement(item.id)
+                        )
                       }
-                      className="w-8 h-8 rounded-lg inline-flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer"
-                    >
-                      <MoreHorizontal className="w-4 h-4" />
-                    </button>
-
-                    {/* Popover Action Menu */}
-                    {actionMenuOpen === item.id && (
-                      <div className="absolute right-6 mt-1 w-36 bg-white rounded-xl shadow-lg border border-slate-100 py-1.5 z-20 text-left animate-in fade-in duration-100">
-                        <button
-                          onClick={() => toggleStatus(item.id)}
-                          className="w-full px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50 transition cursor-pointer"
-                        >
-                          Mark as {item.status === 'Active' ? 'Inactive' : 'Active'}
-                        </button>
-                        <button
-                          onClick={() =>
-                            confirmDelete(
-                              `Delete "${item.name}"? This action cannot be undone.`,
-                              () => deleteAchievement(item.id)
-                            )
-                          }
-                          className="w-full px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 transition cursor-pointer"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    )}
+                    />
                   </td>
                 </tr>
               ))

@@ -24,6 +24,18 @@ const songTitlesAndArtists = [
   { title: 'Tum Hi Ho', artist: 'Arijit Singh', lang: 'Hindi', dur: '4:22' },
   { title: 'Ilahi', artist: 'Arijit Singh', lang: 'Hindi', dur: '3:49' },
   { title: 'As It Was', artist: 'Harry Styles', lang: 'English', dur: '2:47' },
+  { title: 'Why This Kolaveri Di', artist: 'Dhanush, Anirudh', lang: 'Tamil', dur: '3:21' },
+  { title: 'Rowdy Baby', artist: 'Dhanush, Dhee', lang: 'Tamil', dur: '4:32' },
+  { title: 'Arabic Kuthu', artist: 'Anirudh, Jonita Gandhi', lang: 'Tamil', dur: '3:51' },
+  { title: 'Vikram Title Track', artist: 'Anirudh Ravichander', lang: 'Tamil', dur: '3:18' },
+  { title: 'Ami Je Tomar', artist: 'Arijit Singh', lang: 'Bengali', dur: '5:12' },
+  { title: 'Mon Majhi Re', artist: 'Arijit Singh', lang: 'Bengali', dur: '4:05' },
+  { title: 'Tomake Chai', artist: 'Arijit Singh', lang: 'Bengali', dur: '3:58' },
+  { title: 'Jadi Tare Nai Chini Go', artist: 'Kishore Kumar', lang: 'Bengali', dur: '3:27' },
+  { title: 'Sairat Zaala Ji', artist: 'Ajay Gogavale, Chinmayi', lang: 'Marathi', dur: '4:06' },
+  { title: 'Hrudayat Vaje Something', artist: 'Ajay-Atul', lang: 'Marathi', dur: '3:44' },
+  { title: 'Mauli Mauli', artist: 'Ajay Gogavale, Ajay-Atul', lang: 'Marathi', dur: '4:39' },
+  { title: 'Aga Bai Aga Bai', artist: 'Shruti Pathak, Shalmali Kholgade', lang: 'Marathi', dur: '3:19' },
 ];
 
 const coverGradients = [
@@ -50,7 +62,30 @@ const sampleCoverImages = [
   'https://images.unsplash.com/photo-1520523839898-507126c0d663?w=100&auto=format&fit=crop&q=80',
   'https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=100&auto=format&fit=crop&q=80',
   'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1511379938547-c1f69d1988ed?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=100&auto=format&fit=crop&q=80',
 ];
+
+// Specific image URLs for certain songs
+const specificSongImages = {
+  'Tere Hawaale': 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&auto=format&fit=crop&q=80',
+  'Satranga': 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&auto=format&fit=crop&q=80',
+  'Rowdy Baby': 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80',
+  'Mon Majhi Re': 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&auto=format&fit=crop&q=80',
+  'Pehle Bhi Main': 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=100&auto=format&fit=crop&q=80',
+  'Lover': 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=100&auto=format&fit=crop&q=80',
+  'Arabic Kuthu': 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=100&auto=format&fit=crop&q=80',
+  'Tomake Chai': 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&auto=format&fit=crop&q=80',
+  'Levitating': 'https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=100&auto=format&fit=crop&q=80',
+  'Ghungroo': 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=100&auto=format&fit=crop&q=80',
+};
 
 // Generate 100 mock songs
 export const mockSongsList = Array.from({ length: 100 }, (_, i) => {
@@ -59,6 +94,9 @@ export const mockSongsList = Array.from({ length: 100 }, (_, i) => {
   const prefix = provider === 'Spotify' ? '#SP' : '#AM';
   const trackCode = `${prefix}-${90214 - i * 37}`;
   const status = i % 6 === 5 ? 'Unavailable' : 'Ready';
+
+  // Use specific image if available, otherwise use random from array
+  const coverImg = specificSongImages[item.title] || sampleCoverImages[i % sampleCoverImages.length];
 
   return {
     id: `s-${i + 1}`,
@@ -70,7 +108,7 @@ export const mockSongsList = Array.from({ length: 100 }, (_, i) => {
     language: item.lang,
     status,
     coverGradient: coverGradients[i % coverGradients.length],
-    coverImg: sampleCoverImages[i % sampleCoverImages.length],
+    coverImg,
   };
 });
 

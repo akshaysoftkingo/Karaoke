@@ -88,6 +88,22 @@ export const OverviewChart = () => {
 
   const usersAreaPath = `${usersLinePath} L ${width - paddingX} ${height} L ${paddingX} ${height} Z`;
 
+  const activePoint =
+    hoveredIndex !== null
+      ? {
+          x: Math.min(
+            Math.max((usersPoints[hoveredIndex].x / width) * 100, 8),
+            92
+          ),
+          y:
+            Math.min(
+              usersPoints[hoveredIndex].y,
+              performancesPoints[hoveredIndex].y
+            ) / height,
+          data: currentData[hoveredIndex],
+        }
+      : null;
+
   return (
     <div className="bg-white border border-slate-200/70 rounded-2xl p-6 shadow-sm">
       {/* Card Header */}
@@ -123,11 +139,10 @@ export const OverviewChart = () => {
       </div>
 
       {/* Interactive Chart Graphic */}
-      <div className="relative pt-6 pb-2">
+      <div className="relative mt-6 mb-2 w-full aspect-[640/180]">
         <svg
           viewBox={`0 0 ${width} ${height}`}
-          className="w-full h-48 overflow-visible"
-          preserveAspectRatio="none"
+          className="w-full h-full overflow-visible"
         >
           <defs>
             <linearGradient id="pinkGradient" x1="0" y1="0" x2="0" y2="1">
@@ -212,24 +227,25 @@ export const OverviewChart = () => {
         </svg>
 
         {/* Hover Tooltip Popup */}
-        {hoveredIndex !== null && (
+        {activePoint && (
           <div
-            className="absolute -top-3 bg-slate-900 text-white text-[11px] py-1.5 px-3 rounded-lg shadow-xl pointer-events-none transform -translate-x-1/2 flex items-center gap-3 z-10"
+            className="absolute bg-slate-900 text-white text-[11px] py-1.5 px-3 rounded-lg shadow-xl pointer-events-none -translate-x-1/2 -translate-y-[calc(100%+8px)] flex items-center gap-3 z-10"
             style={{
-              left: `${(usersPoints[hoveredIndex].x / width) * 100}%`,
+              left: `${activePoint.x}%`,
+              top: `${activePoint.y * 100}%`,
             }}
           >
             <div>
               <span className="text-slate-400 block text-[10px]">
-                {currentData[hoveredIndex].label}
+                {activePoint.data.label}
               </span>
               <div className="flex items-center gap-2 mt-0.5">
                 <span className="text-pink-400 font-semibold">
-                  {currentData[hoveredIndex].users} users
+                  {activePoint.data.users} users
                 </span>
                 <span className="text-slate-500">•</span>
                 <span className="text-slate-200 font-semibold">
-                  {currentData[hoveredIndex].performances} perfs
+                  {activePoint.data.performances} perfs
                 </span>
               </div>
             </div>

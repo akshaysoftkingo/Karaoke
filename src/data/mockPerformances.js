@@ -51,7 +51,7 @@ const sampleSongs = [
   {
     title: 'Tere Hawaale',
     codePrefix: '#PF-820',
-    coverImg: 'https://images.unsplash.com/photo-1520523839898-507126c0d663?w=100&auto=format&fit=crop&q=80',
+    coverImg: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&auto=format&fit=crop&q=80',
     coverGradient: 'from-teal-900 via-cyan-800 to-slate-900',
     dur: '05:46',
   },
@@ -69,6 +69,69 @@ const sampleSongs = [
     coverGradient: 'from-fuchsia-900 via-purple-700 to-pink-600',
     dur: '04:31',
   },
+  {
+    title: 'Lover',
+    codePrefix: '#PF-793',
+    coverImg: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&auto=format&fit=crop&q=80',
+    coverGradient: 'from-amber-600 via-rose-700 to-indigo-900',
+    dur: '03:41',
+  },
+  {
+    title: 'Shape of You',
+    codePrefix: '#PF-784',
+    coverImg: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80',
+    coverGradient: 'from-blue-900 via-indigo-800 to-purple-900',
+    dur: '03:53',
+  },
+  {
+    title: 'Pasoori',
+    codePrefix: '#PF-775',
+    coverImg: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&auto=format&fit=crop&q=80',
+    coverGradient: 'from-purple-900 via-pink-700 to-amber-600',
+    dur: '03:44',
+  },
+  {
+    title: 'Amplifier',
+    codePrefix: '#PF-766',
+    coverImg: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=100&auto=format&fit=crop&q=80',
+    coverGradient: 'from-sky-700 via-teal-800 to-slate-900',
+    dur: '03:50',
+  },
+  {
+    title: 'Blinding Lights',
+    codePrefix: '#PF-757',
+    coverImg: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=100&auto=format&fit=crop&q=80',
+    coverGradient: 'from-amber-700 via-orange-800 to-red-950',
+    dur: '03:20',
+  },
+  {
+    title: 'Dil Diyan Gallan',
+    codePrefix: '#PF-748',
+    coverImg: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=100&auto=format&fit=crop&q=80',
+    coverGradient: 'from-slate-800 via-indigo-950 to-stone-900',
+    dur: '04:20',
+  },
+  {
+    title: 'Perfect',
+    codePrefix: '#PF-739',
+    coverImg: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&auto=format&fit=crop&q=80',
+    coverGradient: 'from-pink-900 via-purple-800 to-slate-900',
+    dur: '04:23',
+  },
+  {
+    title: 'Tum Hi Ho',
+    codePrefix: '#PF-730',
+    coverImg: 'https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=100&auto=format&fit=crop&q=80',
+    coverGradient: 'from-teal-900 via-cyan-800 to-slate-900',
+    dur: '04:22',
+  },
+  {
+    title: 'Ilahi',
+    codePrefix: '#PF-721',
+    coverImg: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=100&auto=format&fit=crop&q=80',
+    coverGradient: 'from-red-950 via-rose-900 to-stone-900',
+    dur: '03:49',
+  },
 ];
 
 const singers = [
@@ -82,9 +145,25 @@ const singers = [
   { name: 'Aanya Sharma', email: 'aanya.sing@gmail.com' },
   { name: 'Meera Iyer', email: 'meera.iyer@gmail.com' },
   { name: 'Devansh Roy', email: 'devansh.r@live.com' },
+  { name: 'Kavita Sen', email: 'kavita.sen@gmail.com' },
+  { name: 'Aditya Reddy', email: 'aditya.reddy@outlook.com' },
+  { name: 'Simran Gill', email: 'simran.g@icloud.com' },
+  { name: 'Ishaan Sharma', email: 'ishaan.s@gmail.com' },
+  { name: 'Ananya Mehta', email: 'ananya.m@voxstage.io' },
+  { name: 'Varun Kapoor', email: 'varun.k@yahoo.com' },
+  { name: 'Rhea Nair', email: 'rhea.n@gmail.com' },
+  { name: 'Karan Singh', email: 'karan.s@live.com' },
+  { name: 'Pooja Verma', email: 'pooja.v@outlook.com' },
+  { name: 'Aarav Gupta', email: 'aarav.g@gmail.com' },
 ];
 
 const dates = [
+  'Oct 12, 2026',
+  'Oct 12, 2026',
+  'Oct 11, 2026',
+  'Oct 11, 2026',
+  'Oct 10, 2026',
+  'Oct 10, 2026',
   'Oct 09, 2026',
   'Oct 09, 2026',
   'Oct 08, 2026',
@@ -95,10 +174,14 @@ const dates = [
   'Oct 05, 2026',
   'Oct 04, 2026',
   'Oct 03, 2026',
+  'Oct 02, 2026',
+  'Oct 01, 2026',
+  'Sep 30, 2026',
+  'Sep 29, 2026',
 ];
 
-// Generate exactly 100 mock performances matching screenshot
-export const mockPerformancesList = Array.from({ length: 100 }, (_, i) => {
+// Generate exactly 200 mock performances matching screenshot
+export const mockPerformancesList = Array.from({ length: 200 }, (_, i) => {
   // First 6 match screenshot exactly
   if (i === 0) {
     return {
@@ -108,7 +191,7 @@ export const mockPerformancesList = Array.from({ length: 100 }, (_, i) => {
       user: 'Aarav Sharma',
       email: 'aarav.sharma@gmail.com',
       duration: '03:42',
-      date: 'Oct 09, 2026',
+      date: 'Oct 12, 2026',
       score: 92,
       status: 'Completed',
       coverImg: sampleSongs[0].coverImg,
@@ -123,7 +206,7 @@ export const mockPerformancesList = Array.from({ length: 100 }, (_, i) => {
       user: 'Priya Verma',
       email: 'priya.verma@outlook.com',
       duration: '03:18',
-      date: 'Oct 09, 2026',
+      date: 'Oct 12, 2026',
       score: 87,
       status: 'Completed',
       coverImg: sampleSongs[1].coverImg,
@@ -138,7 +221,7 @@ export const mockPerformancesList = Array.from({ length: 100 }, (_, i) => {
       user: 'Rohan Mehta',
       email: 'rohan.mehta@voxstage.io',
       duration: '03:05',
-      date: 'Oct 08, 2026',
+      date: 'Oct 11, 2026',
       score: 76,
       status: 'Completed',
       coverImg: sampleSongs[2].coverImg,
@@ -153,9 +236,9 @@ export const mockPerformancesList = Array.from({ length: 100 }, (_, i) => {
       user: 'Ananya Singh',
       email: 'ananya.singh@gmail.com',
       duration: '04:12',
-      date: 'Oct 08, 2026',
+      date: 'Oct 11, 2026',
       score: 89,
-      status: 'Under Review',
+      status: 'In Progress',
       coverImg: sampleSongs[3].coverImg,
       coverGradient: sampleSongs[3].coverGradient,
     };
@@ -168,7 +251,7 @@ export const mockPerformancesList = Array.from({ length: 100 }, (_, i) => {
       user: 'Kabir Malhotra',
       email: 'kabir.m@yahoo.com',
       duration: '03:36',
-      date: 'Oct 07, 2026',
+      date: 'Oct 10, 2026',
       score: 94,
       status: 'Completed',
       coverImg: sampleSongs[4].coverImg,
@@ -183,9 +266,9 @@ export const mockPerformancesList = Array.from({ length: 100 }, (_, i) => {
       user: 'Ishita Kapoor',
       email: 'ishita.k@icloud.com',
       duration: '02:58',
-      date: 'Oct 07, 2026',
+      date: 'Oct 10, 2026',
       score: 61,
-      status: 'Reported',
+      status: 'Completed',
       coverImg: sampleSongs[5].coverImg,
       coverGradient: sampleSongs[5].coverGradient,
     };
@@ -194,12 +277,10 @@ export const mockPerformancesList = Array.from({ length: 100 }, (_, i) => {
   const songObj = sampleSongs[i % sampleSongs.length];
   const singer = singers[i % singers.length];
   const date = dates[i % dates.length];
-  const perfCode = `${songObj.codePrefix}${10 + (i % 89)}`;
+  const perfCode = `${songObj.codePrefix}${10 + (i % 189)}`;
 
-  // Status breakdown: mostly Completed, a few Under Review and Reported
-  let status = 'Completed';
-  if (i % 12 === 3 || i % 12 === 9) status = 'Under Review';
-  if (i % 14 === 5) status = 'Reported';
+  // Status breakdown: mostly Completed, some In Progress
+  const status = i % 5 === 1 ? 'In Progress' : 'Completed';
 
   const score = 65 + ((i * 7 + 11) % 34); // 65 to 98
 
@@ -218,12 +299,11 @@ export const mockPerformancesList = Array.from({ length: 100 }, (_, i) => {
   };
 });
 
-// Dynamic performance metrics calculated from the 100 mock records
+// Dynamic performance metrics calculated from the mock records
 export const getPerformanceMetrics = (list = mockPerformancesList) => {
   const total = list.length;
   const completed = list.filter((p) => p.status === 'Completed').length;
-  const underReview = list.filter((p) => p.status === 'Under Review').length;
-  const reported = list.filter((p) => p.status === 'Reported').length;
+  const inProgress = list.filter((p) => p.status === 'In Progress').length;
 
   return [
     {
@@ -243,20 +323,12 @@ export const getPerformanceMetrics = (list = mockPerformancesList) => {
       badgeColor: 'bg-emerald-50 text-emerald-600',
     },
     {
-      id: 'review-perf',
-      label: 'UNDER REVIEW',
-      value: underReview.toLocaleString(),
-      icon: 'clock',
+      id: 'progress-perf',
+      label: 'IN PROGRESS',
+      value: inProgress.toLocaleString(),
+      icon: 'activity',
       iconBox: true,
-      badgeColor: 'bg-amber-50 text-amber-600',
-    },
-    {
-      id: 'reported-perf',
-      label: 'REPORTED',
-      value: reported.toLocaleString(),
-      icon: 'alert-triangle',
-      iconBox: true,
-      badgeColor: 'bg-rose-50 text-rose-600',
+      badgeColor: 'bg-sky-50 text-sky-600',
     },
   ];
 };

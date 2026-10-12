@@ -50,7 +50,7 @@ export const Sidebar = ({ onNavigate }) => {
   ];
 
   return (
-    <aside className="w-64 min-w-[256px] bg-white border-r border-slate-200/80 min-h-screen flex flex-col select-none">
+    <aside className="w-64 min-w-[256px] bg-white border-r border-slate-200/80 h-full flex flex-col overflow-y-auto select-none">
       {/* Brand Header */}
       <div className="p-6 pb-5 flex items-center">
         <img

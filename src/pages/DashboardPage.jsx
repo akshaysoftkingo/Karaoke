@@ -1,25 +1,14 @@
-import React, { useState } from 'react';
-import { Download, LayoutDashboard, ShieldCheck, CheckCircle2 } from 'lucide-react';
-import { dashboardMetrics, recentPerformancesData } from '../data/mockDashboard';
+import React from 'react';
+import { LayoutDashboard } from 'lucide-react';
+import { dashboardMetrics } from '../data/mockDashboard';
 import { MetricCard } from '../components/common/MetricCard';
 import { OverviewChart } from '../components/dashboard/OverviewChart';
 import { RecentPerformancesTable } from '../components/dashboard/RecentPerformancesTable';
 import { PerformanceSummary } from '../components/dashboard/PerformanceSummary';
 import { LeaderboardCard } from '../components/dashboard/LeaderboardCard';
 import { RecentActivityCard } from '../components/dashboard/RecentActivityCard';
-import { downloadExcelReport } from '../utils/exportExcel';
 
 export const DashboardPage = () => {
-  const [downloaded, setDownloaded] = useState(false);
-
-  const handleExportExcel = () => {
-    downloadExcelReport(recentPerformancesData);
-    setDownloaded(true);
-    setTimeout(() => {
-      setDownloaded(false);
-    }, 2000);
-  };
-
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Page Header with Admin Dashboard Icon */}
@@ -32,31 +21,12 @@ export const DashboardPage = () => {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-                  Good morning, Admin
+                  Good morning, Abhishek Sharma
                 </h1>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Direct Excel Download Button (No Modal, No JSON) */}
-        <button
-          onClick={handleExportExcel}
-          className="bg-[#ff2b75] hover:bg-[#e61d65] active:scale-98 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm shadow-pink-500/20 flex items-center gap-2 transition self-start sm:self-auto cursor-pointer"
-          title="Download Excel Spreadsheet Report"
-        >
-          {downloaded ? (
-            <>
-              <CheckCircle2 className="w-3.5 h-3.5 text-white" />
-              <span>Report Downloaded!</span>
-            </>
-          ) : (
-            <>
-              <Download className="w-3.5 h-3.5" />
-              <span>Export Report</span>
-            </>
-          )}
-        </button>
       </div>
 
       {/* Top 4 Metrics Row with Icons */}

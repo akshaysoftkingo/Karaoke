@@ -1,11 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { leaderboardMetrics } from '../data/mockLeaderboard';
+import { mockLeaderboardList, getLeaderboardMetrics } from '../data/mockLeaderboard';
 import { MetricCard } from '../components/common/MetricCard';
 import { LeaderboardTable } from '../components/leaderboard/LeaderboardTable';
 
 export const LeaderboardPage = () => {
   const [periodFilter, setPeriodFilter] = useState('This Month');
+
+  // Calculate filtered users based on period
+  const filteredUsers = useMemo(() => {
+    let result = [...mockLeaderboardList];
+
+    if (periodFilter === 'This Week') {
+      result = result.slice(0, 25);
+    } else if (periodFilter === 'This Month') {
+      result = result.slice(0, 50);
+    } else if (periodFilter === 'This Year') {
+      result = result.slice(0, 75);
+    }
+
+    return result;
+  }, [periodFilter]);
+
+  // Calculate dynamic metrics - only TOTAL POINTS changes, RANKED USERS stays static
+  const leaderboardMetrics = useMemo(() => {
+    const totalPoints = filteredUsers.reduce((acc, u) => acc + u.points, 0);
+    const rankedUsers = mockLeaderboardList.length; // Always show total users
+
+    return [
+      {
+        id: 'ranked-users',
+        label: 'RANKED USERS',
+        value: rankedUsers.toLocaleString(),
+        icon: 'bar-chart',
+        iconBox: true,
+        badgeColor: 'bg-pink-50 text-[#ff2b75]',
+      },
+      {
+        id: 'total-points',
+        label: 'TOTAL POINTS AWARDED',
+        value: totalPoints.toLocaleString(),
+        icon: 'star',
+        iconBox: true,
+        badgeColor: 'bg-pink-50 text-[#ff2b75]',
+      },
+    ];
+  }, [filteredUsers]);
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">

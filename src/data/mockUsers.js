@@ -10,8 +10,8 @@ const lastNames = [
 ];
 
 const emailDomains = ['gmail.com', 'outlook.com', 'voxstage.io', 'yahoo.com', 'icloud.com', 'soundwave.in'];
-const statuses = ['Active', 'Active', 'Active', 'Active', 'Suspended', 'Inactive'];
-const accountTypes = ['VIP', 'Premium', 'Artist', 'Free', 'Premium', 'VIP'];
+const statuses = ['Active', 'Active', 'Active', 'Active', 'Inactive', 'Active'];
+const tiers = ['Gold', 'Silver', 'Bronze', 'Gold', 'Silver', 'Bronze'];
 
 const avatarColorPalette = [
   'bg-pink-100 text-[#ff2b75]',
@@ -42,7 +42,7 @@ export const mockUsersList = Array.from({ length: 100 }, (_, i) => {
       songsSung: 142,
       joinedDate: 'Jan 12, 2024',
       status: 'Active',
-      accountType: 'Premium',
+      tier: 'Gold',
     };
   }
   if (i === 1) {
@@ -56,7 +56,7 @@ export const mockUsersList = Array.from({ length: 100 }, (_, i) => {
       songsSung: 98,
       joinedDate: 'Feb 04, 2024',
       status: 'Active',
-      accountType: 'VIP',
+      tier: 'Gold',
     };
   }
   if (i === 2) {
@@ -70,7 +70,7 @@ export const mockUsersList = Array.from({ length: 100 }, (_, i) => {
       songsSung: 215,
       joinedDate: 'Nov 18, 2023',
       status: 'Active',
-      accountType: 'Artist',
+      tier: 'Silver',
     };
   }
   if (i === 3) {
@@ -84,7 +84,7 @@ export const mockUsersList = Array.from({ length: 100 }, (_, i) => {
       songsSung: 310,
       joinedDate: 'Aug 22, 2023',
       status: 'Active',
-      accountType: 'VIP',
+      tier: 'Gold',
     };
   }
   if (i === 4) {
@@ -97,8 +97,8 @@ export const mockUsersList = Array.from({ length: 100 }, (_, i) => {
       userId: '#VX-83112',
       songsSung: 14,
       joinedDate: 'May 09, 2024',
-      status: 'Suspended',
-      accountType: 'Free',
+      status: 'Inactive',
+      tier: 'Bronze',
     };
   }
   if (i === 5) {
@@ -112,7 +112,7 @@ export const mockUsersList = Array.from({ length: 100 }, (_, i) => {
       songsSung: 5,
       joinedDate: 'Oct 02, 2023',
       status: 'Inactive',
-      accountType: 'Free',
+      tier: 'Silver',
     };
   }
 
@@ -129,7 +129,7 @@ export const mockUsersList = Array.from({ length: 100 }, (_, i) => {
   const year = 2023 + (i % 2);
   const joinedDate = `${month} ${day < 10 ? '0' : ''}${day}, ${year}`;
   const status = statuses[i % statuses.length];
-  const accountType = accountTypes[i % accountTypes.length];
+  const tier = tiers[i % tiers.length];
   const avatarBg = avatarColorPalette[i % avatarColorPalette.length];
 
   return {
@@ -142,7 +142,7 @@ export const mockUsersList = Array.from({ length: 100 }, (_, i) => {
     songsSung,
     joinedDate,
     status,
-    accountType,
+    tier,
   };
 });
 
@@ -150,7 +150,7 @@ export const mockUsersList = Array.from({ length: 100 }, (_, i) => {
 export const getUserMetrics = (users = mockUsersList) => {
   const total = users.length;
   const active = users.filter((u) => u.status === 'Active').length;
-  const suspended = users.filter((u) => u.status === 'Suspended').length;
+  const inactive = users.filter((u) => u.status === 'Inactive').length;
   // Users registered in 2024
   const newThisMonth = users.filter((u) => u.joinedDate.includes('2024')).length;
 
@@ -168,9 +168,9 @@ export const getUserMetrics = (users = mockUsersList) => {
       icon: 'activity',
     },
     {
-      id: 'suspended-users',
-      label: 'SUSPENDED USERS',
-      value: suspended.toLocaleString(),
+      id: 'inactive-users',
+      label: 'INACTIVE USERS',
+      value: inactive.toLocaleString(),
       icon: 'ban',
     },
     {

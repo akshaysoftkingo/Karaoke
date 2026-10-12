@@ -32,25 +32,25 @@ export const PerformancesPage = () => {
 
         <button
           onClick={handleExportPerformances}
-          className="bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold py-2.5 px-4 rounded-xl border border-slate-200 shadow-xs flex items-center gap-2 transition self-start sm:self-auto cursor-pointer"
+          className="bg-[#ff2b75] hover:bg-[#e61d65] text-white text-xs font-semibold py-2.5 px-4 rounded-xl shadow-sm shadow-pink-500/20 flex items-center gap-2 transition self-start sm:self-auto cursor-pointer"
           title="Download Excel Performances Report"
         >
           {downloaded ? (
             <>
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-white" />
               <span>Performances Exported!</span>
             </>
           ) : (
             <>
-              <Download className="w-3.5 h-3.5 text-slate-500" />
+              <Download className="w-3.5 h-3.5" />
               <span>Export Performances</span>
             </>
           )}
         </button>
       </div>
 
-      {/* Top 4 Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Top 3 Metrics Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {performanceMetrics.map((metric) => (
           <MetricCard
             key={metric.id}

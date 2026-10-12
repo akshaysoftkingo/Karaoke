@@ -19,7 +19,7 @@ export const CreateChallengeModal = () => {
     type: 'Song Completion',
     startDate: '2026-10-17',
     endDate: '2026-10-20',
-    target: '',
+    participants: '',
   });
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export const CreateChallengeModal = () => {
         type: challengeBeingEdited.type || 'Song Completion',
         startDate: challengeBeingEdited.startDate || '2026-10-17',
         endDate: challengeBeingEdited.endDate || '2026-10-20',
-        target: String(challengeBeingEdited.target || ''),
+        participants: String(challengeBeingEdited.participants || ''),
       });
     }
   }, [activeModal, challengeBeingEdited]);
@@ -40,7 +40,16 @@ export const CreateChallengeModal = () => {
   }
 
   const handleChange = (field) => (e) => {
-    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    const raw = e.target.value;
+    setForm((prev) => ({
+      ...prev,
+      [field]: field === 'participants' ? raw.replace(/[^0-9]/g, '') : raw,
+    }));
+  };
+
+  const parseParticipants = () => {
+    const parsed = parseInt(form.participants, 10);
+    return Number.isFinite(parsed) ? parsed : 0;
   };
 
   const handleCreate = () => {
@@ -57,7 +66,7 @@ export const CreateChallengeModal = () => {
           type: form.type,
           startDate: form.startDate,
           endDate: form.endDate,
-          target: Number(form.target) || 5,
+          participants: parseParticipants(),
         });
       } else if (addChallenge) {
         addChallenge({
@@ -67,8 +76,7 @@ export const CreateChallengeModal = () => {
           type: form.type,
           startDate: form.startDate,
           endDate: form.endDate,
-          target: Number(form.target) || 5,
-          participants: 1,
+          participants: parseParticipants(),
           status: 'Active',
         });
       }
@@ -83,7 +91,7 @@ export const CreateChallengeModal = () => {
           type: 'Song Completion',
           startDate: '2026-10-17',
           endDate: '2026-10-20',
-          target: '',
+          participants: '',
         });
       }, 800);
     }, 600);
@@ -98,7 +106,7 @@ export const CreateChallengeModal = () => {
       type: 'Song Completion',
       startDate: '2026-10-17',
       endDate: '2026-10-20',
-      target: '',
+      participants: '',
     });
   };
 
@@ -192,20 +200,19 @@ export const CreateChallengeModal = () => {
             </div>
           </div>
 
-          {/* Target */}
+          {/* Participants */}
           <div>
-            <label className={labelClass}>Target (Songs to Complete)</label>
+            <label className={labelClass}>Participants</label>
             <input
-              type="number"
-              min="1"
-              value={form.target}
-              onChange={handleChange('target')}
-              placeholder="e.g. 5"
+              type="text"
+              inputMode="numeric"
+              value={form.participants}
+              onChange={handleChange('participants')}
+              placeholder="e.g. 100"
               className={inputClass}
             />
             <p className="text-[10px] text-slate-400 mt-1.5">
-              Number of songs required for participants to complete the
-              challenge.
+              Expected number of participants for this challenge.
             </p>
           </div>
         </div>

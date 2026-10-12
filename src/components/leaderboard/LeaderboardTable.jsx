@@ -77,7 +77,7 @@ export const LeaderboardTable = ({ periodFilter = 'This Month' }) => {
               setSearchTerm(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search users..."
+            placeholder="Search by user or email..."
             className="w-full text-xs text-slate-800 placeholder-slate-400 pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#ff2b75] focus:outline-none transition-all"
           />
         </div>
@@ -103,15 +103,15 @@ export const LeaderboardTable = ({ periodFilter = 'This Month' }) => {
 
       {/* Leaderboard Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
+        <table className="w-full text-left text-xs table-fixed">
           <thead>
             <tr className="text-[11px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-100">
-              <th className="py-3 px-3 pl-0">RANK</th>
-              <th className="py-3 px-3">USER</th>
-              <th className="py-3 px-3">TIER</th>
-              <th className="py-3 px-3">PERFORMANCES</th>
-              <th className="py-3 px-3">AVERAGE SCORE</th>
-              <th className="py-3 px-3 text-right pr-0">TOTAL POINTS</th>
+              <th className="py-3 px-3 pl-0 w-[16.67%]">RANK</th>
+              <th className="py-3 px-3 w-[16.67%]">USER</th>
+              <th className="py-3 px-3 w-[16.67%]">TIER</th>
+              <th className="py-3 px-3 w-[16.67%]">PERFORMANCES</th>
+              <th className="py-3 px-3 w-[16.67%]">AVERAGE SCORE</th>
+              <th className="py-3 px-3 text-right pr-0 w-[16.67%]">TOTAL POINTS</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100/70">

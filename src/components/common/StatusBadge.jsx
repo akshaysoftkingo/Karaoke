@@ -20,6 +20,14 @@ export const StatusBadge = ({ status, type = 'user' }) => {
         </span>
       );
     }
+    if (norm === 'in progress') {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-sky-50 text-sky-700 border border-sky-200/60">
+          <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+          In Progress
+        </span>
+      );
+    }
     if (norm === 'under review') {
       return (
         <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200/60">
@@ -145,19 +153,24 @@ export const StatusBadge = ({ status, type = 'user' }) => {
   }
 
   if (type === 'song') {
-    const isReady = status.toLowerCase() === 'ready';
+    const norm = (status || '').toLowerCase();
+    if (norm === 'ready') {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          Ready
+        </span>
+      );
+    }
     return (
-      <span
-        className={`text-xs font-medium ${
-          isReady ? 'text-slate-800' : 'text-slate-600'
-        }`}
-      >
-        {status}
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-600 border border-rose-200/60">
+        <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+        Unavailable
       </span>
     );
   }
 
-  // User status types: Active, Suspended, Inactive
+  // User status types: Active, Inactive
   const normalized = (status || '').toLowerCase();
 
   if (normalized === 'active') {
@@ -165,15 +178,6 @@ export const StatusBadge = ({ status, type = 'user' }) => {
       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
         Active
-      </span>
-    );
-  }
-
-  if (normalized === 'suspended') {
-    return (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600 border border-rose-200/60">
-        <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-        Suspended
       </span>
     );
   }

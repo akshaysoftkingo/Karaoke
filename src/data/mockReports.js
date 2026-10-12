@@ -2,6 +2,7 @@
 
 export const timeRangeReportData = {
   'Last 7 Days': {
+    periodLabel: 'Daily',
     metrics: [
       { id: 'total-users', label: 'TOTAL USERS', value: '6,420', icon: 'users' },
       { id: 'total-performances', label: 'TOTAL PERFORMANCES', value: '4,810', icon: 'mic' },
@@ -10,17 +11,16 @@ export const timeRangeReportData = {
     ],
     trends: {
       points: [
-        { label: 'Oct 03', value: 490, x: 20, y: 150 },
-        { label: 'Oct 04', value: 520, x: 75, y: 140 },
-        { label: 'Oct 05', value: 610, x: 130, y: 110 },
-        { label: 'Oct 06', value: 790, x: 195, y: 60, isPeak: true },
-        { label: 'Oct 07', value: 710, x: 250, y: 85 },
-        { label: 'Oct 08', value: 680, x: 300, y: 95 },
-        { label: 'Oct 09', value: 740, x: 345, y: 75 },
+        { label: 'Oct 06', value: 490, x: 20, y: 150 },
+        { label: 'Oct 07', value: 520, x: 75, y: 140 },
+        { label: 'Oct 08', value: 610, x: 130, y: 110 },
+        { label: 'Oct 09', value: 790, x: 195, y: 60, isPeak: true },
+        { label: 'Oct 10', value: 710, x: 250, y: 85 },
+        { label: 'Oct 11', value: 680, x: 300, y: 95 },
+        { label: 'Oct 12', value: 740, x: 345, y: 75 },
       ],
       pathD: 'M 20 150 C 45 145, 60 142, 75 140 C 95 135, 115 125, 130 110 C 150 90, 175 65, 195 60 C 215 65, 235 80, 250 85 C 270 90, 285 92, 300 95 C 315 90, 330 80, 345 75',
-      peakInfo: { label: 'Oct 06 Peak', value: '790 performances', leftPercent: '53%', topPercent: '12%' },
-      labels: ['Oct 03', 'Oct 04', 'Oct 05', 'Oct 06', 'Oct 07', 'Oct 08', 'Oct 09'],
+      labels: ['Oct 06', 'Oct 07', 'Oct 08', 'Oct 09', 'Oct 10', 'Oct 11', 'Oct 12'],
       highlightIndex: 3,
       avgText: 'Average 648/day',
     },
@@ -37,6 +37,7 @@ export const timeRangeReportData = {
     weekendLift: '+22% weekends',
   },
   'Last 30 Days': {
+    periodLabel: 'Weekly',
     metrics: [
       { id: 'total-users', label: 'TOTAL USERS', value: '24,580', icon: 'users' },
       { id: 'total-performances', label: 'TOTAL PERFORMANCES', value: '18,420', icon: 'mic' },
@@ -45,17 +46,16 @@ export const timeRangeReportData = {
     ],
     trends: {
       points: [
-        { label: 'Sep 15', value: 480, x: 20, y: 155 },
-        { label: 'Sep 22', value: 560, x: 80, y: 125 },
-        { label: 'Sep 29', value: 630, x: 140, y: 108 },
-        { label: 'Oct 06', value: 710, x: 200, y: 92 },
-        { label: 'Oct 12', value: 840, x: 260, y: 55, isPeak: true },
-        { label: 'Oct 13', value: 780, x: 300, y: 72 },
-        { label: 'Oct 20', value: 750, x: 345, y: 80 },
+        { label: 'Sep 12', value: 480, x: 20, y: 155 },
+        { label: 'Sep 19', value: 560, x: 80, y: 125 },
+        { label: 'Sep 26', value: 630, x: 140, y: 108 },
+        { label: 'Oct 03', value: 710, x: 200, y: 92 },
+        { label: 'Oct 08', value: 840, x: 260, y: 55, isPeak: true },
+        { label: 'Oct 10', value: 780, x: 300, y: 72 },
+        { label: 'Oct 12', value: 750, x: 345, y: 80 },
       ],
       pathD: 'M 20 155 C 50 145, 60 130, 80 125 C 105 120, 120 112, 140 108 C 170 102, 185 96, 200 92 C 230 84, 245 60, 260 55 C 280 50, 290 70, 300 72 C 315 75, 330 78, 345 80',
-      peakInfo: { label: 'Oct 12 Peak', value: '840 performances', leftPercent: '68%', topPercent: '8%' },
-      labels: ['Sep 15', 'Sep 22', 'Sep 29', 'Oct 06', 'Oct 13', 'Oct 20'],
+      labels: ['Sep 12', 'Sep 19', 'Sep 26', 'Oct 03', 'Oct 08', 'Oct 10', 'Oct 12'],
       highlightIndex: 4,
       avgText: 'Average 614/day',
     },
@@ -72,6 +72,7 @@ export const timeRangeReportData = {
     weekendLift: '+18% weekends',
   },
   'Last 90 Days': {
+    periodLabel: 'Bi-Weekly',
     metrics: [
       { id: 'total-users', label: 'TOTAL USERS', value: '68,900', icon: 'users' },
       { id: 'total-performances', label: 'TOTAL PERFORMANCES', value: '54,200', icon: 'mic' },
@@ -88,7 +89,6 @@ export const timeRangeReportData = {
         { label: 'Oct 15', value: 980, x: 345, y: 55 },
       ],
       pathD: 'M 20 165 C 50 155, 65 145, 80 135 C 105 125, 120 110, 140 100 C 170 85, 185 75, 200 70 C 230 65, 245 45, 265 40 C 295 42, 320 50, 345 55',
-      peakInfo: { label: 'Sep 28 Peak', value: '1,120 performances', leftPercent: '72%', topPercent: '5%' },
       labels: ['Aug 01', 'Aug 15', 'Sep 01', 'Sep 15', 'Sep 28', 'Oct 15'],
       highlightIndex: 4,
       avgText: 'Average 742/day',
@@ -106,6 +106,7 @@ export const timeRangeReportData = {
     weekendLift: '+25% weekends',
   },
   'This Year': {
+    periodLabel: 'Monthly',
     metrics: [
       { id: 'total-users', label: 'TOTAL USERS', value: '184,500', icon: 'users' },
       { id: 'total-performances', label: 'TOTAL PERFORMANCES', value: '142,800', icon: 'mic' },
@@ -114,17 +115,20 @@ export const timeRangeReportData = {
     ],
     trends: {
       points: [
-        { label: 'Jan', value: 650, x: 20, y: 155 },
-        { label: 'Mar', value: 920, x: 85, y: 120 },
-        { label: 'May', value: 1350, x: 150, y: 85 },
-        { label: 'Jul', value: 1820, x: 215, y: 60 },
-        { label: 'Aug', value: 2450, x: 280, y: 35, isPeak: true },
-        { label: 'Oct', value: 2100, x: 345, y: 50 },
+        { label: 'Jan', value: 650, x: 25, y: 155 },
+        { label: 'Feb', value: 780, x: 57, y: 145 },
+        { label: 'Mar', value: 920, x: 89, y: 135 },
+        { label: 'Apr', value: 1100, x: 121, y: 120 },
+        { label: 'May', value: 1350, x: 153, y: 100 },
+        { label: 'Jun', value: 1580, x: 185, y: 85 },
+        { label: 'Jul', value: 1820, x: 217, y: 70 },
+        { label: 'Aug', value: 2450, x: 249, y: 45, isPeak: true },
+        { label: 'Sep', value: 2300, x: 281, y: 55 },
+        { label: 'Oct', value: 2100, x: 313, y: 65 },
       ],
-      pathD: 'M 20 155 C 50 145, 65 130, 85 120 C 115 105, 130 92, 150 85 C 180 75, 195 65, 215 60 C 245 55, 260 40, 280 35 C 310 40, 325 45, 345 50',
-      peakInfo: { label: 'Aug 15 Peak', value: '2,450 performances', leftPercent: '76%', topPercent: '4%' },
-      labels: ['Jan', 'Mar', 'May', 'Jul', 'Aug', 'Oct'],
-      highlightIndex: 4,
+      pathD: 'M 25 155 C 39 150, 49 148, 57 145 C 71 140, 81 138, 89 135 C 103 130, 113 125, 121 120 C 135 112, 145 108, 153 100 C 167 92, 177 88, 185 85 C 199 78, 209 74, 217 70 C 231 62, 241 52, 249 45 C 263 48, 273 52, 281 55 C 295 58, 305 62, 313 65',
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+      highlightIndex: 7,
       avgText: 'Average 1,180/day',
     },
     activity: [

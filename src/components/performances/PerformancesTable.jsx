@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Search, ChevronDown, Music2 } from 'lucide-react';
 import { mockPerformancesList } from '../../data/mockPerformances';
 import { StatusBadge } from '../common/StatusBadge';
-import { ActionMenu } from '../common/ActionMenu';
+import { RowActions } from '../common/RowActions';
 import { Pagination } from '../common/Pagination';
 import { useApp } from '../../context/AppContext';
 
@@ -10,8 +10,8 @@ export const PerformancesTable = () => {
   const { confirmDelete } = useApp();
   const [performances, setPerformances] = useState(mockPerformancesList);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All Statuses');
   const [dateFilter, setDateFilter] = useState('All Dates');
+  const [statusFilter, setStatusFilter] = useState('All Statuses');
   const [sortOrder, setSortOrder] = useState('Newest First');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPerformance, setSelectedPerformance] = useState(null);
@@ -27,14 +27,14 @@ export const PerformancesTable = () => {
         item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.perfCode.toLowerCase().includes(searchTerm.toLowerCase());
 
+      const matchDate =
+        dateFilter === 'All Dates' || item.date === dateFilter;
+
       const matchStatus =
         statusFilter === 'All Statuses' ||
         item.status.toLowerCase() === statusFilter.toLowerCase();
 
-      const matchDate =
-        dateFilter === 'All Dates' || item.date === dateFilter;
-
-      return matchSearch && matchStatus && matchDate;
+      return matchSearch && matchDate && matchStatus;
     });
 
     if (sortOrder === 'Highest Score') {
@@ -46,7 +46,7 @@ export const PerformancesTable = () => {
     }
 
     return result;
-  }, [performances, searchTerm, statusFilter, dateFilter, sortOrder]);
+  }, [performances, searchTerm, dateFilter, statusFilter, sortOrder]);
 
   const handlePerformanceAction = (action, performance) => {
     if (action === 'delete' || action === 'del') {
@@ -98,8 +98,7 @@ export const PerformancesTable = () => {
             >
               <option>All Statuses</option>
               <option>Completed</option>
-              <option>Under Review</option>
-              <option>Reported</option>
+              <option>In Progress</option>
             </select>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
@@ -142,16 +141,16 @@ export const PerformancesTable = () => {
 
       {/* Performances Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
+        <table className="w-full text-left text-xs table-fixed">
           <thead>
             <tr className="text-[11px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-100">
-              <th className="py-3 px-3 pl-0">PERFORMANCE</th>
-              <th className="py-3 px-3">USER</th>
-              <th className="py-3 px-3">DURATION</th>
-              <th className="py-3 px-3">DATE</th>
-              <th className="py-3 px-3">SCORE</th>
-              <th className="py-3 px-3">STATUS</th>
-              <th className="py-3 px-3 text-right pr-0">ACTIONS</th>
+              <th className="py-3 px-3 pl-0 w-[14.28%]">PERFORMANCE</th>
+              <th className="py-3 px-3 w-[14.28%]">USER</th>
+              <th className="py-3 px-3 w-[14.28%]">DURATION</th>
+              <th className="py-3 px-3 w-[14.28%]">DATE</th>
+              <th className="py-3 px-3 w-[14.28%]">SCORE</th>
+              <th className="py-3 px-3 w-[14.28%]">STATUS</th>
+              <th className="py-3 px-3 text-right pr-0 w-[14.28%]">ACTIONS</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100/70">
@@ -235,12 +234,9 @@ export const PerformancesTable = () => {
 
                   {/* Actions */}
                   <td className="py-3 px-3 text-right pr-0">
-                    <ActionMenu
-                      onSelect={(action) => handlePerformanceAction(action, item)}
-                      items={[
-                        { id: 'edit', label: 'Edit Performance' },
-                        { id: 'del', label: 'Delete Session', danger: true },
-                      ]}
+                    <RowActions
+                      onView={() => handlePerformanceAction('edit', item)}
+                      onDelete={() => handlePerformanceAction('del', item)}
                     />
                   </td>
                 </tr>
@@ -276,7 +272,7 @@ export const PerformancesTable = () => {
             </div>
             <div className="grid grid-cols-2 gap-3 mt-5 text-xs">
               <label className="text-slate-400">Score<input type="number" min="0" max="100" value={performanceDraft.score} onChange={(e) => setPerformanceDraft((prev) => ({ ...prev, score: Number(e.target.value) }))} className="mt-1 w-full border border-slate-200 rounded-lg px-2 py-1.5 text-slate-700" /></label>
-              <label className="text-slate-400">Status<select value={performanceDraft.status} onChange={(e) => setPerformanceDraft((prev) => ({ ...prev, status: e.target.value }))} className="mt-1 w-full border border-slate-200 rounded-lg px-2 py-1.5 text-slate-700"><option>Completed</option><option>Under Review</option><option>Reported</option></select></label>
+              <label className="text-slate-400">Status<select value={performanceDraft.status} onChange={(e) => setPerformanceDraft((prev) => ({ ...prev, status: e.target.value }))} className="mt-1 w-full border border-slate-200 rounded-lg px-2 py-1.5 text-slate-700"><option>Completed</option><option>In Progress</option></select></label>
               <div><span className="text-slate-400 block">Duration</span><span className="font-semibold text-slate-700">{performanceDraft.duration}</span></div>
               <div><span className="text-slate-400 block">Date</span><span className="font-semibold text-slate-700">{performanceDraft.date}</span></div>
             </div>

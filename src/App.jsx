@@ -31,7 +31,7 @@ const MainLayout = () => {
   return (
     <div className="flex min-h-screen bg-[#f8fafc] text-slate-800">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block lg:sticky lg:top-0 lg:h-screen lg:self-start shrink-0">
         <Sidebar />
       </div>
 

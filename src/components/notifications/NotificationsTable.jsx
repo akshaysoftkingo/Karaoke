@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Search, ChevronDown, RefreshCw, Bell } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { StatusBadge } from '../common/StatusBadge';
-import { ActionMenu } from '../common/ActionMenu';
+import { RowActions } from '../common/RowActions';
 import { Pagination } from '../common/Pagination';
 
 const notificationIcons = [
@@ -18,9 +18,6 @@ export const NotificationsTable = () => {
   const {
     notifications,
     deleteNotification,
-    duplicateNotification,
-    setNotificationBeingEdited,
-    setActiveModal,
     confirmDelete,
   } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
@@ -137,15 +134,15 @@ export const NotificationsTable = () => {
 
       {/* Notifications Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
+        <table className="w-full text-left text-xs table-fixed">
           <thead>
             <tr className="text-[11px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-100">
-              <th className="py-3 px-3 pl-0">NOTIFICATION</th>
-              <th className="py-3 px-3">TYPE</th>
-              <th className="py-3 px-3">AUDIENCE</th>
-              <th className="py-3 px-3">DATE</th>
-              <th className="py-3 px-3">STATUS</th>
-              <th className="py-3 px-3 text-right pr-0">ACTIONS</th>
+              <th className="py-3 px-3 pl-0 w-[16.67%]">NOTIFICATION</th>
+              <th className="py-3 px-3 w-[16.67%]">TYPE</th>
+              <th className="py-3 px-3 w-[16.67%]">AUDIENCE</th>
+              <th className="py-3 px-3 w-[16.67%]">DATE</th>
+              <th className="py-3 px-3 w-[16.67%]">STATUS</th>
+              <th className="py-3 px-3 text-right pr-0 w-[16.67%]">ACTIONS</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100/70">
@@ -212,27 +209,14 @@ export const NotificationsTable = () => {
 
                     {/* Actions */}
                     <td className="py-3 px-3 text-right pr-0">
-                      <ActionMenu
-                        onSelect={(action) => {
-                          if (action === 'del') {
-                            confirmDelete(`Delete "${item.title}"? This action cannot be undone.`, () =>
-                              deleteNotification(item.id)
-                            );
-                          } else if (action === 'duplicate') {
-                            duplicateNotification(item);
-                          } else if (action === 'view') {
-                            setSelectedNotification(item);
-                          } else if (action === 'edit') {
-                            setNotificationBeingEdited(item);
-                            setActiveModal('create-notification');
-                          }
-                        }}
-                        items={[
-                          { id: 'view', label: 'View Details' },
-                          { id: 'edit', label: 'Edit Notification' },
-                          { id: 'duplicate', label: 'Duplicate' },
-                          { id: 'del', label: 'Delete', danger: true },
-                        ]}
+                      <RowActions
+                        onView={() => setSelectedNotification(item)}
+                        onDelete={() =>
+                          confirmDelete(
+                            `Delete "${item.title}"? This action cannot be undone.`,
+                            () => deleteNotification(item.id)
+                          )
+                        }
                       />
                     </td>
                   </tr>

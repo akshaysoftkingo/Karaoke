@@ -24,7 +24,7 @@ export const SettingsPage = () => {
 
   // Admin Profile state
   const [profileName, setProfileName] = useState('Abhishek Sharma');
-  const [profileEmail, setProfileEmail] = useState('admin@voxkaraoke.io');
+  const [profileEmail, setProfileEmail] = useState('Admin123@gmail.com');
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileSaved, setProfileSaved] = useState(false);
 
@@ -114,7 +114,15 @@ export const SettingsPage = () => {
             connected: nextState,
             status: nextState ? 'Connected' : 'Disconnected',
             detail: nextState
-              ? 'Regional catalogue · Connected and synced'
+              ? p.id === 'spotify'
+                ? 'Connected to catalogue · 12,480 tracks synced'
+                : p.id === 'apple'
+                ? 'Catalogue integration active · Auto-sync enabled'
+                : 'Regional catalogue · Connected and synced'
+              : p.id === 'spotify'
+              ? 'Spotify catalogue · Not connected'
+              : p.id === 'apple'
+              ? 'Apple Music catalogue · Not connected'
               : 'Regional catalogue · Not connected',
             badgeColor: nextState
               ? 'text-emerald-700 bg-emerald-50 border-emerald-200/60'
@@ -212,7 +220,7 @@ export const SettingsPage = () => {
                 <div className="flex items-center gap-2 mt-2">
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-pink-50 text-[#ff2b75] border border-pink-100">
                     <Shield className="w-3 h-3" />
-                    Super Admin
+                    Admin
                   </span>
                   <span className="text-[11px] text-slate-400">
                     · Read-only clearance
@@ -265,7 +273,7 @@ export const SettingsPage = () => {
                   <div className="flex items-center gap-2.5">
                     <Shield className="w-4 h-4 text-slate-400" />
                     <span className="text-xs font-bold text-slate-800">
-                      Super Admin
+                      Admin
                     </span>
                   </div>
                   <span className="text-[10px] font-semibold text-slate-500 bg-slate-200/60 px-2 py-0.5 rounded-md">
@@ -535,10 +543,10 @@ export const SettingsPage = () => {
                   {prov.connected ? (
                     <button
                       type="button"
-                      onClick={() => setActiveModal('provider-settings')}
+                      onClick={() => toggleProviderConnect(prov.id)}
                       className="px-3.5 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition cursor-pointer"
                     >
-                      Manage
+                      Disconnect
                     </button>
                   ) : (
                     <button

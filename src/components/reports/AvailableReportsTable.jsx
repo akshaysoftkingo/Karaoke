@@ -81,13 +81,13 @@ export const AvailableReportsTable = () => {
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse table-fixed">
           <thead>
             <tr className="border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-slate-50/40">
-              <th className="py-3.5 px-6">Report Name</th>
-              <th className="py-3.5 px-6">Category</th>
-              <th className="py-3.5 px-6">Last Updated</th>
-              <th className="py-3.5 px-6 text-right">Action</th>
+              <th className="py-3.5 px-6 w-[25%]">Report Name</th>
+              <th className="py-3.5 px-6 w-[25%]">Category</th>
+              <th className="py-3.5 px-6 w-[25%]">Last Updated</th>
+              <th className="py-3.5 px-6 text-right w-[25%]">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 text-xs text-slate-700">

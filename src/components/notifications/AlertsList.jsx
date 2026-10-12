@@ -6,17 +6,14 @@ import {
   Trophy,
   Send,
   AlertTriangle,
-  MoreHorizontal,
-  Check,
-  Trash2,
   BellRing,
 } from 'lucide-react';
+import { RowActions } from '../common/RowActions';
 import { useApp } from '../../context/AppContext';
 
 export const AlertsList = () => {
   const { alerts, markAllAlertsAsRead, toggleAlertRead, deleteAlert, confirmDelete } = useApp();
   const [activeTab, setActiveTab] = useState('all'); // 'all', 'unread', 'read'
-  const [openMenuId, setOpenMenuId] = useState(null);
 
   const unreadCount = alerts.filter((a) => !a.read).length;
   const readCount = alerts.filter((a) => a.read).length;
@@ -183,43 +180,18 @@ export const AlertsList = () => {
                   </div>
                 </div>
 
-                {/* Right Action Menu */}
-                <div className="relative shrink-0">
-                  <button
-                    onClick={() =>
-                      setOpenMenuId(openMenuId === alert.id ? null : alert.id)
+                {/* Right Actions */}
+                <div className="shrink-0">
+                  <RowActions
+                    onToggle={() => toggleAlertRead(alert.id)}
+                    toggleOn={alert.read}
+                    toggleTitle={alert.read ? 'Mark as unread' : 'Mark as read'}
+                    onDelete={() =>
+                      confirmDelete(`Delete this alert? This action cannot be undone.`, () =>
+                        deleteAlert(alert.id)
+                      )
                     }
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer"
-                  >
-                    <MoreHorizontal className="w-4 h-4" />
-                  </button>
-
-                  {openMenuId === alert.id && (
-                    <div className="absolute right-0 mt-1 w-40 bg-white rounded-xl shadow-lg border border-slate-100 py-1.5 z-20 text-left animate-in fade-in duration-100">
-                      <button
-                        onClick={() => {
-                          toggleAlertRead(alert.id);
-                          setOpenMenuId(null);
-                        }}
-                        className="w-full px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50 transition cursor-pointer flex items-center gap-2"
-                      >
-                        <Check className="w-3.5 h-3.5" />
-                        <span>{alert.read ? 'Mark as unread' : 'Mark as read'}</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          confirmDelete(`Delete this alert? This action cannot be undone.`, () =>
-                            deleteAlert(alert.id)
-                          );
-                          setOpenMenuId(null);
-                        }}
-                        className="w-full px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 transition cursor-pointer flex items-center gap-2"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                        <span>Delete alert</span>
-                      </button>
-                    </div>
-                  )}
+                  />
                 </div>
               </div>
             ))

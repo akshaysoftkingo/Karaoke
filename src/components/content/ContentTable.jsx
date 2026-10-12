@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
-import {
-  Search,
-  RotateCcw,
-  MoreHorizontal,
-  Trash2,
-  ToggleLeft,
-} from 'lucide-react';
+import { Search, RotateCcw } from 'lucide-react';
+import { RowActions } from '../common/RowActions';
 import { Pagination } from '../common/Pagination';
 import { useApp } from '../../context/AppContext';
 
@@ -23,7 +18,6 @@ export const ContentTable = ({
   const [selectedStatus, setSelectedStatus] = useState('All Statuses');
   const [selectedPlacement, setSelectedPlacement] = useState('All Placements');
   const [currentPage, setCurrentPage] = useState(1);
-  const [actionMenuOpen, setActionMenuOpen] = useState(null);
 
   const pageSize = 6;
 
@@ -91,14 +85,12 @@ export const ContentTable = ({
         )
       );
     }
-    setActionMenuOpen(null);
   };
 
   const deleteCollection = (id) => {
     if (onUpdateCollections) {
       onUpdateCollections((prev) => prev.filter((c) => c.id !== id));
     }
-    setActionMenuOpen(null);
   };
 
   const toggleSongStatus = (id) => {
@@ -111,14 +103,12 @@ export const ContentTable = ({
         )
       );
     }
-    setActionMenuOpen(null);
   };
 
   const deleteSong = (id) => {
     if (onUpdateFeaturedSongs) {
       onUpdateFeaturedSongs((prev) => prev.filter((s) => s.id !== id));
     }
-    setActionMenuOpen(null);
   };
 
   const toggleBannerStatus = (id) => {
@@ -131,14 +121,12 @@ export const ContentTable = ({
         )
       );
     }
-    setActionMenuOpen(null);
   };
 
   const deleteBanner = (id) => {
     if (onUpdateBanners) {
       onUpdateBanners((prev) => prev.filter((b) => b.id !== id));
     }
-    setActionMenuOpen(null);
   };
 
   return (
@@ -208,15 +196,15 @@ export const ContentTable = ({
       {/* Content depending on Active Tab */}
       <div className="overflow-x-auto">
         {activeTab === 'collections' && (
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse table-fixed">
             <thead>
               <tr className="border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-slate-50/40">
-                <th className="py-3.5 px-6">Collection</th>
-                <th className="py-3.5 px-6">Content Type</th>
-                <th className="py-3.5 px-6">Songs</th>
-                <th className="py-3.5 px-6">Placement</th>
-                <th className="py-3.5 px-6">Status</th>
-                <th className="py-3.5 px-6 text-right">Actions</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Collection</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Content Type</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Songs</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Placement</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Status</th>
+                <th className="py-3.5 px-6 text-right w-[16.67%]">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
@@ -294,41 +282,17 @@ export const ContentTable = ({
                     </td>
 
                     {/* Actions */}
-                    <td className="py-4 px-6 text-right relative">
-                      <button
-                        onClick={() =>
-                          setActionMenuOpen(
-                            actionMenuOpen === item.id ? null : item.id
+                    <td className="py-4 px-6 text-right">
+                      <RowActions
+                        onToggle={() => toggleCollectionStatus(item.id)}
+                        toggleOn={item.status === 'Active'}
+                        onDelete={() =>
+                          confirmDelete(
+                            `Delete "${item.title}"? This action cannot be undone.`,
+                            () => deleteCollection(item.id)
                           )
                         }
-                        className="w-8 h-8 rounded-lg inline-flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer"
-                      >
-                        <MoreHorizontal className="w-4 h-4" />
-                      </button>
-
-                      {actionMenuOpen === item.id && (
-                        <div className="absolute right-6 mt-1 w-36 bg-white rounded-xl shadow-lg border border-slate-100 py-1.5 z-20 text-left animate-in fade-in duration-100">
-                          <button
-                            onClick={() => toggleCollectionStatus(item.id)}
-                            className="w-full px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50 transition cursor-pointer flex items-center gap-2"
-                          >
-                            <ToggleLeft className="w-3.5 h-3.5" />
-                            {item.status === 'Active' ? 'Deactivate' : 'Activate'}
-                          </button>
-                          <button
-                            onClick={() =>
-                              confirmDelete(
-                                `Delete "${item.title}"? This action cannot be undone.`,
-                                () => deleteCollection(item.id)
-                              )
-                            }
-                            className="w-full px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 transition cursor-pointer flex items-center gap-2"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                            Delete
-                          </button>
-                        </div>
-                      )}
+                      />
                     </td>
                   </tr>
                 ))
@@ -339,15 +303,15 @@ export const ContentTable = ({
 
         {/* Featured Songs Tab View */}
         {activeTab === 'featuredSongs' && (
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse table-fixed">
             <thead>
               <tr className="border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-slate-50/40">
-                <th className="py-3.5 px-6">Song</th>
-                <th className="py-3.5 px-6">Artist</th>
-                <th className="py-3.5 px-6">Total Plays</th>
-                <th className="py-3.5 px-6">Placement Spot</th>
-                <th className="py-3.5 px-6">Status</th>
-                <th className="py-3.5 px-6 text-right">Actions</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Song</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Artist</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Total Plays</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Placement Spot</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Status</th>
+                <th className="py-3.5 px-6 text-right w-[16.67%]">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
@@ -368,46 +332,29 @@ export const ContentTable = ({
                     </span>
                   </td>
                   <td className="py-4 px-6">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      Active
-                    </span>
+                    {song.status === 'Active' ? (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        Active
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                        Inactive
+                      </span>
+                    )}
                   </td>
-                  <td className="py-4 px-6 text-right relative">
-                    <button
-                      onClick={() =>
-                        setActionMenuOpen(
-                          actionMenuOpen === song.id ? null : song.id
+                  <td className="py-4 px-6 text-right">
+                    <RowActions
+                      onToggle={() => toggleSongStatus(song.id)}
+                      toggleOn={song.status === 'Active'}
+                      onDelete={() =>
+                        confirmDelete(
+                          `Delete "${song.title}"? This action cannot be undone.`,
+                          () => deleteSong(song.id)
                         )
                       }
-                      className="w-8 h-8 rounded-lg inline-flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer"
-                    >
-                      <MoreHorizontal className="w-4 h-4" />
-                    </button>
-
-                    {actionMenuOpen === song.id && (
-                      <div className="absolute right-6 mt-1 w-36 bg-white rounded-xl shadow-lg border border-slate-100 py-1.5 z-20 text-left animate-in fade-in duration-100">
-                        <button
-                          onClick={() => toggleSongStatus(song.id)}
-                          className="w-full px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50 transition cursor-pointer flex items-center gap-2"
-                        >
-                          <ToggleLeft className="w-3.5 h-3.5" />
-                          {song.status === 'Active' ? 'Deactivate' : 'Activate'}
-                        </button>
-                        <button
-                          onClick={() =>
-                            confirmDelete(
-                              `Delete "${song.title}"? This action cannot be undone.`,
-                              () => deleteSong(song.id)
-                            )
-                          }
-                          className="w-full px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 transition cursor-pointer flex items-center gap-2"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                          Delete
-                        </button>
-                      </div>
-                    )}
+                    />
                   </td>
                 </tr>
               ))}
@@ -417,15 +364,15 @@ export const ContentTable = ({
 
         {/* Banners Tab View */}
         {activeTab === 'banners' && (
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse table-fixed">
             <thead>
               <tr className="border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-slate-50/40">
-                <th className="py-3.5 px-6">Banner Title & Target</th>
-                <th className="py-3.5 px-6">Placement</th>
-                <th className="py-3.5 px-6">Impressions</th>
-                <th className="py-3.5 px-6">Clicks</th>
-                <th className="py-3.5 px-6">Status</th>
-                <th className="py-3.5 px-6 text-right">Actions</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Banner Title & Target</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Placement</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Impressions</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Clicks</th>
+                <th className="py-3.5 px-6 w-[16.67%]">Status</th>
+                <th className="py-3.5 px-6 text-right w-[16.67%]">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
@@ -451,46 +398,29 @@ export const ContentTable = ({
                     {banner.clicks}
                   </td>
                   <td className="py-4 px-6">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      Active
-                    </span>
+                    {banner.status === 'Active' ? (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        Active
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                        Inactive
+                      </span>
+                    )}
                   </td>
-                  <td className="py-4 px-6 text-right relative">
-                    <button
-                      onClick={() =>
-                        setActionMenuOpen(
-                          actionMenuOpen === banner.id ? null : banner.id
+                  <td className="py-4 px-6 text-right">
+                    <RowActions
+                      onToggle={() => toggleBannerStatus(banner.id)}
+                      toggleOn={banner.status === 'Active'}
+                      onDelete={() =>
+                        confirmDelete(
+                          `Delete "${banner.title}"? This action cannot be undone.`,
+                          () => deleteBanner(banner.id)
                         )
                       }
-                      className="w-8 h-8 rounded-lg inline-flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer"
-                    >
-                      <MoreHorizontal className="w-4 h-4" />
-                    </button>
-
-                    {actionMenuOpen === banner.id && (
-                      <div className="absolute right-6 mt-1 w-36 bg-white rounded-xl shadow-lg border border-slate-100 py-1.5 z-20 text-left animate-in fade-in duration-100">
-                        <button
-                          onClick={() => toggleBannerStatus(banner.id)}
-                          className="w-full px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50 transition cursor-pointer flex items-center gap-2"
-                        >
-                          <ToggleLeft className="w-3.5 h-3.5" />
-                          {banner.status === 'Active' ? 'Deactivate' : 'Activate'}
-                        </button>
-                        <button
-                          onClick={() =>
-                            confirmDelete(
-                              `Delete "${banner.title}"? This action cannot be undone.`,
-                              () => deleteBanner(banner.id)
-                            )
-                          }
-                          className="w-full px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 transition cursor-pointer flex items-center gap-2"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                          Delete
-                        </button>
-                      </div>
-                    )}
+                    />
                   </td>
                 </tr>
               ))}

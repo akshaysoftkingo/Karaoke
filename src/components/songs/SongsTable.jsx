@@ -3,7 +3,7 @@ import { Search, ChevronDown, Music2 } from 'lucide-react';
 import { mockSongsList } from '../../data/mockSongs';
 import { ProviderBadge } from './ProviderBadge';
 import { StatusBadge } from '../common/StatusBadge';
-import { ActionMenu } from '../common/ActionMenu';
+import { RowActions } from '../common/RowActions';
 import { Pagination } from '../common/Pagination';
 import { useApp } from '../../context/AppContext';
 
@@ -131,6 +131,9 @@ export const SongsTable = () => {
               <option>Hindi</option>
               <option>English</option>
               <option>Punjabi</option>
+              <option>Tamil</option>
+              <option>Bengali</option>
+              <option>Marathi</option>
             </select>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
@@ -155,16 +158,16 @@ export const SongsTable = () => {
 
       {/* Songs Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
+        <table className="w-full text-left text-xs table-fixed">
           <thead>
             <tr className="text-[11px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-100">
-              <th className="py-3 px-3 pl-0">SONG</th>
-              <th className="py-3 px-3">ARTIST</th>
-              <th className="py-3 px-3">PROVIDER</th>
-              <th className="py-3 px-3">DURATION</th>
-              <th className="py-3 px-3">LANGUAGE</th>
-              <th className="py-3 px-3">KARAOKE STATUS</th>
-              <th className="py-3 px-3 text-right pr-0">ACTIONS</th>
+              <th className="py-3 px-3 pl-0 w-[14.29%]">SONG</th>
+              <th className="py-3 px-3 w-[14.29%]">ARTIST</th>
+              <th className="py-3 px-3 w-[14.29%]">PROVIDER</th>
+              <th className="py-3 px-3 w-[14.29%]">DURATION</th>
+              <th className="py-3 px-3 w-[14.29%]">LANGUAGE</th>
+              <th className="py-3 px-3 w-[14.29%]">KARAOKE STATUS</th>
+              <th className="py-3 px-3 text-right pr-0 w-[14.29%]">ACTIONS</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100/70">
@@ -236,14 +239,9 @@ export const SongsTable = () => {
 
                   {/* Actions */}
                   <td className="py-3 px-3 text-right pr-0">
-                    <ActionMenu
-                      onSelect={(action) => handleSongAction(action, song)}
-                      items={[
-                        { id: 'lyrics', label: 'View Lyrics & Cues' },
-                        { id: 're-sync', label: 'Re-sync Stems' },
-                        { id: 'preview', label: 'Preview Karaoke Track' },
-                        { id: 'del', label: 'Remove Song', danger: true },
-                      ]}
+                    <RowActions
+                      onView={() => setSelectedSong(song)}
+                      onDelete={() => handleSongAction('del', song)}
                     />
                   </td>
                 </tr>

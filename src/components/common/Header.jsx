@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Search, Bell, LayoutDashboard, LogOut, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
@@ -16,6 +16,7 @@ export const Header = () => {
     logout,
   } = useApp();
   const navigate = useNavigate();
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -51,7 +52,10 @@ export const Header = () => {
         {/* Notifications Button */}
         <div className="relative">
           <button
-            onClick={() => setNotificationsOpen(!notificationsOpen)}
+            onClick={() => {
+              setNotificationsOpen(!notificationsOpen);
+              setProfileOpen(false);
+            }}
             className="w-9 h-9 rounded-full flex items-center justify-center text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors relative cursor-pointer"
             title="Notifications"
           >
@@ -110,28 +114,48 @@ export const Header = () => {
           )}
         </div>
 
-        {/* Admin Profile Pill matching Screenshot */}
-        <button
-          onClick={() => navigate('/settings')}
-          className="flex items-center gap-2.5 p-1 sm:pr-2.5 rounded-full hover:bg-slate-50 transition cursor-pointer text-left"
-          title="Admin Profile & Settings"
-        >
-          <div className="w-8 h-8 rounded-full bg-[#ff2b75] flex items-center justify-center text-white font-black text-xs shadow-2xs">
-            AS
-          </div>
-          <div className="hidden sm:block leading-tight">
-            <div className="text-xs font-bold text-slate-900">Admin User</div>
-            <div className="text-[10px] font-medium text-slate-400">Super Admin</div>
-          </div>
-        </button>
-        <button
-          onClick={handleLogout}
-          className="w-9 h-9 rounded-full flex items-center justify-center text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
-          title="Log out"
-          aria-label="Log out"
-        >
-          <LogOut className="w-[18px] h-[18px]" />
-        </button>
+        {/* Admin Profile Pill with Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => {
+              setProfileOpen(!profileOpen);
+              setNotificationsOpen(false);
+            }}
+            className="flex items-center gap-2.5 p-1 sm:pr-2.5 rounded-full hover:bg-slate-50 transition cursor-pointer text-left"
+            title="Admin Profile"
+          >
+            <div className="w-8 h-8 rounded-full bg-[#ff2b75] flex items-center justify-center text-white font-black text-xs shadow-2xs">
+              AS
+            </div>
+            <div className="hidden sm:block leading-tight">
+              <div className="text-xs font-bold text-slate-900">Abhishek Sharma</div>
+              <div className="text-[10px] font-medium text-slate-400">Admin</div>
+            </div>
+          </button>
+
+          {/* Profile Dropdown */}
+          {profileOpen && (
+            <div className="absolute right-0 mt-2 w-60 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-30 animate-in fade-in slide-in-from-top-2 duration-150">
+              <div className="px-4 py-2.5 border-b border-slate-100 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-[#ff2b75] flex items-center justify-center text-white font-black text-xs">
+                  AS
+                </div>
+                <div className="leading-tight">
+                  <div className="text-xs font-bold text-slate-900">Abhishek Sharma</div>
+                  <div className="text-[10px] font-medium text-slate-400">Admin</div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="w-full px-4 py-2.5 text-left text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2.5 transition-colors cursor-pointer"
+              >
+                <LogOut className="w-4 h-4" />
+                Log out
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

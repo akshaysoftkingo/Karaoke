@@ -1,8 +1,10 @@
 import React from 'react';
-import { Star, Clock, Zap, Trophy, SlidersHorizontal } from 'lucide-react';
+import { Star, Clock, Zap, Trophy } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { performanceSummaryData } from '../../data/mockDashboard';
 
 export const PerformanceSummary = () => {
+  const navigate = useNavigate();
   const getIcon = (iconName) => {
     switch (iconName) {
       case 'star':
@@ -31,9 +33,6 @@ export const PerformanceSummary = () => {
               Real-time aggregate platform telemetry
             </p>
           </div>
-          <button className="text-slate-400 hover:text-slate-600 transition">
-            <SlidersHorizontal className="w-4 h-4" />
-          </button>
         </div>
 
         {/* Telemetry Metric Cards */}
@@ -77,7 +76,10 @@ export const PerformanceSummary = () => {
       </div>
 
       {/* Action Button */}
-      <button className="w-full mt-4 py-2 px-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 border border-slate-200/70 transition-all text-center">
+      <button
+        onClick={() => navigate('/performances')}
+        className="w-full mt-4 py-2 px-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 border border-slate-200/70 transition-all text-center cursor-pointer"
+      >
         View Detailed Metrics
       </button>
     </div>
