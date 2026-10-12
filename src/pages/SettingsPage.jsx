@@ -836,7 +836,7 @@ export const SettingsPage = () => {
                     className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 pr-10 text-xs font-semibold text-slate-800 focus:border-[#ff2b75] focus:outline-none cursor-pointer"
                   >
                     <option value="all">All Users</option>
-                    <option value="old">Old Users</option>
+                    <option value="old">Old Users (over 30 days ago)</option>
                     <option value="custom">Specific Users</option>
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
