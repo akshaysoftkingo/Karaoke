@@ -122,6 +122,22 @@ export const SettingsPage = () => {
   const [pushSent, setPushSent] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState('tpl-1');
   const [showPushModal, setShowPushModal] = useState(false);
+  const [showCustomModal, setShowCustomModal] = useState(false);
+  const [customName, setCustomName] = useState('');
+  const [customDesc, setCustomDesc] = useState('');
+  const [customNotifications, setCustomNotifications] = useState([]);
+
+  const handleAddCustomNotification = () => {
+    const title = customName.trim();
+    if (!title) return;
+    setCustomNotifications((prev) => [
+      ...prev,
+      { id: `custom-${Date.now()}`, title, desc: customDesc.trim() },
+    ]);
+    setCustomName('');
+    setCustomDesc('');
+    setShowCustomModal(false);
+  };
 
   const handleSendPush = () => {
     if (!selectedTemplate) return;
@@ -730,17 +746,27 @@ export const SettingsPage = () => {
                   Push Notifications
                 </h2>
               </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowPushModal(true);
-                  setPushSent(false);
-                }}
-                className="bg-[#ff2b75] hover:bg-[#e61d65] active:scale-98 text-white text-xs font-bold py-2 px-3.5 rounded-xl shadow-sm shadow-pink-500/20 flex items-center gap-1.5 transition cursor-pointer shrink-0"
-              >
-                <Plus className="w-3.5 h-3.5 stroke-3" />
-                <span>Create Notification</span>
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setShowCustomModal(true)}
+                  className="bg-white hover:bg-slate-50 text-[#ff2b75] border border-pink-200 text-xs font-bold py-2 px-3 rounded-xl flex items-center gap-1.5 transition cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5 stroke-3" />
+                  <span>Add Notification</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPushModal(true);
+                    setPushSent(false);
+                  }}
+                  className="bg-[#ff2b75] hover:bg-[#e61d65] active:scale-98 text-white text-xs font-bold py-2 px-3.5 rounded-xl shadow-sm shadow-pink-500/20 flex items-center gap-1.5 transition cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5 stroke-3" />
+                  <span>Send Notification</span>
+                </button>
+              </div>
             </div>
             <p className="text-xs text-slate-500 -mt-2">
               Receive real-time push updates on your registered devices.
@@ -751,27 +777,29 @@ export const SettingsPage = () => {
               <h3 className="text-xs font-bold text-slate-900">
                  Notifications
               </h3>
-              {staticNotifications.map((tpl) => {
-                const TplIcon = tpl.icon;
-                return (
-                  <div
-                    key={tpl.id}
-                    className="flex items-start gap-3 p-2.5 rounded-xl border border-slate-100"
-                  >
-                    <div className="w-7 h-7 rounded-lg bg-pink-50 text-[#ff2b75] flex items-center justify-center shrink-0 mt-0.5">
-                      <TplIcon className="w-3.5 h-3.5" />
+              <div className="space-y-1.5 max-h-[248px] overflow-y-auto pr-1">
+                {[...staticNotifications, ...customNotifications].map((tpl) => {
+                  const TplIcon = tpl.icon ?? Bell;
+                  return (
+                    <div
+                      key={tpl.id}
+                      className="flex items-start gap-3 p-2.5 rounded-xl border border-slate-100"
+                    >
+                      <div className="w-7 h-7 rounded-lg bg-pink-50 text-[#ff2b75] flex items-center justify-center shrink-0 mt-0.5">
+                        <TplIcon className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-slate-900">
+                          {tpl.title}
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5">
+                          {tpl.desc}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-slate-900">
-                        {tpl.title}
-                      </h4>
-                      <p className="text-[11px] text-slate-500 mt-0.5">
-                        {tpl.desc}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -814,7 +842,7 @@ export const SettingsPage = () => {
                     onChange={(e) => setSelectedTemplate(e.target.value)}
                     className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 pr-10 text-xs font-semibold text-slate-800 focus:border-[#ff2b75] focus:outline-none cursor-pointer"
                   >
-                    {staticNotifications.map((tpl) => (
+                    {[...staticNotifications, ...customNotifications].map((tpl) => (
                       <option key={tpl.id} value={tpl.id}>
                         {tpl.title}
                       </option>
@@ -836,6 +864,7 @@ export const SettingsPage = () => {
                     className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 pr-10 text-xs font-semibold text-slate-800 focus:border-[#ff2b75] focus:outline-none cursor-pointer"
                   >
                     <option value="all">All Users</option>
+                    <option value="new">New Users (past one week)</option>
                     <option value="old">Old Users (over 30 days ago)</option>
                     <option value="custom">Specific Users</option>
                   </select>
@@ -880,9 +909,82 @@ export const SettingsPage = () => {
                   </>
                 ) : (
                   <>
-                    <Send className="w-3.5 h-3.5" /> Send Notification
+                    <Send className="w-3.5 h-3.5" /> Send
                   </>
                 )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Custom Notification Modal */}
+      {showCustomModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Bell className="w-4 h-4 text-[#ff2b75]" />
+                <div>
+                  <h3 className="font-bold text-slate-900 text-sm">
+                    Add Custom Notification
+                  </h3>
+                  <p className="text-[11px] text-slate-400">
+                    Give it a name and description
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowCustomModal(false)}
+                className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="text-[11px] font-bold tracking-wider text-slate-500 uppercase block mb-2">
+                  Notification Name
+                </label>
+                <input
+                  type="text"
+                  value={customName}
+                  onChange={(e) => setCustomName(e.target.value)}
+                  placeholder="e.g. Flash Sale Alert"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal focus:border-[#ff2b75] focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="text-[11px] font-bold tracking-wider text-slate-500 uppercase block mb-2">
+                  Description
+                </label>
+                <textarea
+                  value={customDesc}
+                  onChange={(e) => setCustomDesc(e.target.value)}
+                  rows={3}
+                  placeholder="Describe what this notification is about"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:border-[#ff2b75] focus:outline-none resize-none"
+                />
+              </div>
+            </div>
+
+            <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowCustomModal(false)}
+                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={!customName.trim()}
+                onClick={handleAddCustomNotification}
+                className="px-4 py-2 bg-[#ff2b75] hover:bg-[#e61d65] text-white text-xs font-semibold rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Notification
               </button>
             </div>
           </div>
